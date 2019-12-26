@@ -30,10 +30,10 @@ public class ServiceResult<T> {
         this.result = result;
     }
 
-
+/*
     public static <T> ServiceResult<T> success() {
         return new ServiceResult<>(true);
-    }
+    }*/
 
     public static <T> ServiceResult<T> success(T result) {
         ServiceResult<T> serviceResult = new ServiceResult<>(true);
@@ -41,23 +41,10 @@ public class ServiceResult<T> {
         return serviceResult;
     }
 
-    public static <T> ServiceResult<T> notFound() {
-        return new ServiceResult<>(false, Message.NOT_FOUND.getValue());
-    }
-
-    public enum Message {
-        NOT_FOUND("Not Found Resource!"),
-        NOT_LOGIN("User not login!");
-
-        private String value;
-
-        Message(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
+    public static <T> ServiceResult<T> error(String message) {
+        ServiceResult<T> serviceResult = new ServiceResult<>(false);
+        serviceResult.setMessage(message);
+        return serviceResult;
     }
 
     public boolean isSuccess() {

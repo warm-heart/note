@@ -26,6 +26,13 @@ public class ApiResponse<T> {
         return apiResponse;
     }
 
+    public static <T> ApiResponse<T> error(String msg) {
+        ApiResponse<T> apiResponse = new ApiResponse<>();
+        apiResponse.setCode(500);
+        apiResponse.setMsg(msg);
+        return apiResponse;
+    }
+
 
     public static <T> ApiResponse<T> success(T object, ResultEnum resultEnum) {
         ApiResponse<T> apiResponse = new ApiResponse<>();
@@ -43,12 +50,6 @@ public class ApiResponse<T> {
         return apiResponse;
     }
 
-    public static <T> ApiResponse<T> error(String msg) {
-        ApiResponse<T> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(500);
-        apiResponse.setMsg(msg);
-        return apiResponse;
-    }
 
     public static <T> ApiResponse<T> error(ResultEnum resultEnum) {
         ApiResponse<T> apiResponse = new ApiResponse<>();

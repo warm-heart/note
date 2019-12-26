@@ -25,9 +25,6 @@ public class CorsFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-
-        log.info("跨域过滤器执行了");
-
         String origin = request.getHeader(ORIGIN);
 
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");//* or origin as u prefer
