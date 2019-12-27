@@ -32,7 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
         //可以直接访问静态资源 比如
         // http:localhost:8080/Image/bg-1565082763608.bg.jpg
         registry.addResourceHandler("/Image/**")
-                .addResourceLocations("file:E:/bookImage/");
+                .addResourceLocations("file:E:/userIcon/");
     }
 
     @Override

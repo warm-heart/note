@@ -39,7 +39,7 @@ public class LoginServiceImpl implements LoginService {
             throw new UserException(ResultEnum.USER_NOT_FOUND);
         if (MD5Utils.matches(password, user.getUserPassword())) {
             String token = tokenUtils.getToken();
-            stringRedisTemplate.opsForValue().set(token, user.getUserId(), 7, TimeUnit.DAYS);
+            stringRedisTemplate.opsForValue().set(token, String.valueOf(user.getUserId()), 7, TimeUnit.DAYS);
             return ServiceResult.success(token);
         }
         return ServiceResult.error(ResultEnum.LOGIN_FAIL.getMessage());

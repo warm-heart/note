@@ -22,19 +22,13 @@ public class UserDaoTest extends NoteApplicationTests {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private TokenUtils tokenUtils;
+
     @Test
     void findByUserName() {
-        System.out.println(userDao.findByUserName("wwqwqe"));
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            User u = new User();
-            u.setUserId(String.valueOf(i));
-            userList.add(u);
-        }
+        System.out.println(userDao.findByUserName("cooper"));
+        System.out.println(MD5Utils.encode("123456"));
 
-        redisTemplate.opsForValue().set("da", userList);
-        String token = "da";
-        boolean f = stringRedisTemplate.delete(token);
-        System.out.println(f);
     }
 }

@@ -13,14 +13,13 @@ import java.util.Date;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 2705003623444254647L;
-    private String userId;
-    private String userPassword;
+    private Integer userId;
     private String userName;
-    private String userPhone;
-  /*  private String userIcon;
     private String nickName;
+    private String userPassword;
+    private String userIcon;
     private String userAddress;
     private String userEmail;
-
-    private Date updateTime;*/
+    private String userPhone;
+    private Date updateTime;
 }
