@@ -29,6 +29,26 @@ public class UserDaoTest extends NoteApplicationTests {
     void findByUserName() {
         System.out.println(userDao.findByUserName("cooper"));
         System.out.println(MD5Utils.encode("123456"));
+    }
 
+
+    @Test
+    void updateUser() {
+        User user = new User();
+        user.setUserIcon("da");
+        user.setNickName("da");
+        user.setUserAddress("da");
+        user.setUserEmail("da");
+        user.setUserPassword("da");
+        user.setUserPhone("da");
+        user.setUserId(2);
+        user.setUserName("da");
+        Integer integer = userDao.updateUser(user);
+        System.out.println("条数"+1);
+    }
+
+    @Test
+    void findByUserId() {
+        System.out.println(userDao.findByUserId(2));
     }
 }

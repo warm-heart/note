@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 public class NoteController {
 
 
-    @PostMapping(value = "/vue", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/createNote")
     @ResponseBody()
-    public ApiResponse<User> vue(@RequestBody User user, HttpServletRequest request, HttpServletResponse response){
-        return ApiResponse.success(user);
-}
+    public ApiResponse<User> createNote(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+        return null;
+    }
 }
