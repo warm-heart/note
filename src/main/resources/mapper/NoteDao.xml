@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cloud.note.dao.NoteDao">
+    <select id="findByNoteTitle" resultType="org.cloud.note.entity.Note">
+        select * from note_info where note_title=#{noteTitle}
+    </select>
+
+
+    <select id="findByNoteId" resultType="org.cloud.note.entity.Note">
+        select * from note_info where note_id=#{noteId}
+    </select>
+
+
+    <update id="updateNote" parameterType="org.cloud.note.entity.Note">
+        update note_info set note_title=#{noteTitle},note_description=#{noteDescription},
+        category_id=#{categoryId},
+        note_context=#{noteContext},share_status=#{shareStatus},note_status=#{noteStatus}
+        where note_id=#{noteId}
+
+    </update>
+
+    <select id="findAllNoteByPage" resultType="org.cloud.note.entity.Note">
+        select  * from  note_info where user_id=#{userId} limit #{page},#{size}
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer" >
+        select count(*) from note_info where user_id=#{userId}
+    </select>
+
+    <insert id="saveNote" parameterType="org.cloud.note.entity.Note"
+            useGeneratedKeys="true" keyProperty="noteId" keyColumn="note_id">
+      insert  into note_info(note_title, note_description, note_context, category_id, user_id) values
+      (#{noteTitle},#{noteDescription},#{noteContext},#{categoryId},#{userId})
+    </insert>
+
+    <delete id="removeByNoteId">
+        delete from note_info where note_id=#{noteId}
+    </delete>
+
+</mapper>

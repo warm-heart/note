@@ -3,7 +3,7 @@ package org.cloud.note.entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,5 +25,7 @@ public class User implements Serializable {
     private String userAddress;
     private String userEmail;
     private String userPhone;
+    private Integer roleId;
+    private Integer userStatus;
     private Date updateTime;
 }

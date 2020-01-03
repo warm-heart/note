@@ -19,6 +19,7 @@ public class Note implements Serializable {
     private String noteDescription;
     private String noteContext;
     private Integer noteStatus;
+    private Integer shareStatus;
     private Integer categoryId;
     private Integer userId;
     private Date updateTime;

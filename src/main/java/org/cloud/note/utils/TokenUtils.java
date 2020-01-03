@@ -1,6 +1,10 @@
 package org.cloud.note.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cloud.note.entity.User;
+import org.cloud.note.enums.ResultEnum;
+import org.cloud.note.exception.UserException;
+import org.cloud.note.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -21,6 +25,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class TokenUtils {
+
+    @Autowired
+    UserService userService;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -42,11 +49,21 @@ public class TokenUtils {
         return null;
     }
 
+    /**
+     * 验证token
+     *
+     * @param token
+     * @return
+     */
     public boolean verify(String token) {
         if (StringUtils.isEmpty(token))
             return false;
         String userId = stringRedisTemplate.opsForValue().get(token);
         if (!StringUtils.isEmpty(userId)) {
+            User user = userService.findByUserId(Integer.valueOf(userId));
+            if (user.getUserStatus() == 1) {
+                throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
+            }
             stringRedisTemplate.expire(token, 7, TimeUnit.DAYS);
             return true;
         }

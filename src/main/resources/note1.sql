@@ -12,12 +12,23 @@ create  table user (
 `user_address` varchar(64)   comment '用户地址',
 `user_email` varchar (64)   comment '用户邮箱',
 `user_phone` varchar(64)    comment '用户电话',
+`user_status`tinyint(3) NOT NULL default  '0' comment '用户状态,默认0 正常，1封禁',
+`role_id` bigint not null  default '1' comment '权限 默认为用户',
 `create_time` timestamp NOT NULL default current_timestamp comment '注册时间',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
 unique key `uk_user_name`(`user_name`),
 PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '用户表';
 
+
+DROP TABLE IF EXISTS `role`;
+create  table role (
+`role_id` bigint  NOT NULL AUTO_INCREMENT comment '用户Id',
+`role_name` varchar(64) NOT NULL comment '权限名',
+`create_time` timestamp NOT NULL default current_timestamp comment '新建时间',
+`update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
+PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment '角色表';
 
 
 DROP TABLE IF EXISTS `note_category`;
@@ -29,6 +40,7 @@ CREATE TABLE `note_category` (
 `create_time` timestamp NOT NULL default current_timestamp comment '创建时间',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
 key `idx_category_name` (`category_name`),
+key `idx_user_id` (`user_id`),
 PRIMARY KEY (`category_id`)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment'笔记类目表';
@@ -41,12 +53,13 @@ CREATE TABLE `note_info` (
 `note_title` varchar(64) NOT NULL comment '笔记标题',
 `note_description` varchar(64)   comment '笔记描述',
 `note_context` text  comment '笔记内容',
-`note_status`tinyint(3) NOT NULL default  '0' comment '笔记状态,默认0未分享，1已分享',
+`share_status`tinyint(3) NOT NULL default  '0' comment '分享状态,默认0 未分享，1已分享',
+`note_status`tinyint(3) NOT NULL default  '0' comment '笔记状态,默认0 可以显示，1不可显示',
 `category_id` bigint Not NULL comment '类目编号',
 `user_id` bigint NOT NULL,
 `create_time` timestamp NOT NULL default current_timestamp comment '创建时间',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
-key `idx_note_name` (`note_name`),
+key `idx_note_title` (`note_title`),
 key `idx_user_id` (`user_id`),
 key `idx_category_id` (`category_id`),
 PRIMARY KEY (`note_id`)

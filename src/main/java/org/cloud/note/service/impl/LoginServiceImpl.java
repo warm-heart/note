@@ -4,7 +4,6 @@ package org.cloud.note.service.impl;
 import lombok.extern.slf4j.Slf4j;
 
 import org.cloud.note.VO.ServiceResult;
-import org.cloud.note.dao.UserDao;
 import org.cloud.note.entity.User;
 import org.cloud.note.enums.ResultEnum;
 
@@ -41,6 +40,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ServiceResult<String> login(String userName, String password) {
         User user = userService.findByUserName(userName);
+        if (user.getUserStatus() == 1) {
+            throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
+        }
         if (MD5Utils.matches(password, user.getUserPassword())) {
             String token = tokenUtils.getToken();
             stringRedisTemplate.opsForValue().set(token, String.valueOf(user.getUserId()), 7, TimeUnit.DAYS);

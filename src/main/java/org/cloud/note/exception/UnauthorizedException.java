@@ -6,7 +6,7 @@ import org.cloud.note.enums.ResultEnum;
  * @author wangqianlong
  * @create 2019-05-02 10:03
  */
-public class UnauthorizedException extends NoteException {
+public class UnauthorizedException extends NoteBasicException {
     private Integer code;
 
     public UnauthorizedException(ResultEnum resultEnum) {

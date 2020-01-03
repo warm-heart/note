@@ -44,7 +44,7 @@ public class UserDaoTest extends NoteApplicationTests {
         user.setUserId(2);
         user.setUserName("da");
         Integer integer = userDao.updateUser(user);
-        System.out.println("条数"+1);
+        System.out.println("条数" + integer);
     }
 
     @Test

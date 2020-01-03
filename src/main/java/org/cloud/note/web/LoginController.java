@@ -42,11 +42,17 @@ public class LoginController {
             List<String> res = new ArrayList<>();
             res.add((String) serviceResult.getResult());
             res.add(user.getUserIcon());
-
             return ApiResponse.success(res);
         }
         return ApiResponse.error(serviceResult.getMessage());
 
+    }
+
+
+    @PostMapping("/register")
+    public ApiResponse register(@RequestBody @Valid User user1) {
+        //todo 注册建立默认笔记本
+        return null;
     }
 
     @PostMapping("/logout")

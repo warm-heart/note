@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cloud.note.dao.NoteCategoryDao">
+
+
+    <select id="findByUserId" resultType="org.cloud.note.entity.NoteCategory">
+        select * from note_category where user_id=#{userId}
+    </select>
+
+
+    <update id="updateNoteCategory" parameterType="org.cloud.note.entity.NoteCategory">
+        update note_category set category_name=#{categoryName},
+        category_description=#{categoryDescription}
+        where category_id=#{categoryId}
+    </update>
+
+    <select id="findByCategoryId" resultType="org.cloud.note.entity.NoteCategory">
+        select  * from  note_category   where category_id=#{categoryId}
+
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from note_category
+    </select>
+
+    <insert id="saveNoteCategory" parameterType="org.cloud.note.entity.NoteCategory">
+      insert  into note_category(user_id, category_name, category_description) values (#{userId},
+      #{categoryName},#{categoryDescription})
+    </insert>
+
+    <select id="getNoteCategoryByNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
+        select * from  note_category where category_name=#{categoryName} and user_id=#{userId}
+    </select>
+</mapper>

@@ -25,8 +25,8 @@ public class TimeConverterConfig implements Converter<String, Date> {
     static {
         formarts.add("yyyy-MM");
         formarts.add("yyyy-MM-dd");
-        formarts.add("yyyy-MM-dd hh:mm");
-        formarts.add("yyyy-MM-dd hh:mm:ss");
+        formarts.add("yyyy-MM-dd HH:mm");
+        formarts.add("yyyy-MM-dd HH:mm:ss");
     }
 
     @Override

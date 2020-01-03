@@ -6,7 +6,7 @@ import org.cloud.note.enums.ResultEnum;
  * @author wangqianlong
  * @create 2019-05-02 10:03
  */
-public class UserException extends NoteException {
+public class UserException extends NoteBasicException {
     private Integer code;
 
     public UserException(ResultEnum resultEnum) {
