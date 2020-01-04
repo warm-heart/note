@@ -1,6 +1,7 @@
 package org.cloud.note.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.cloud.note.entity.NoteShare;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,4 +11,10 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface NoteShareDao {
+
+    Integer saveShare(NoteShare noteShare);
+
+    Integer removeShareByNoteId(Integer noteId);
+
+    Integer incrementLoveCount(Integer noteId);
 }

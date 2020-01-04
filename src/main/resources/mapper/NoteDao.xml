@@ -24,7 +24,7 @@
         select  * from  note_info where user_id=#{userId} limit #{page},#{size}
     </select>
 
-    <select id="getTotal" resultType="java.lang.Integer" >
+    <select id="getTotal" resultType="java.lang.Integer">
         select count(*) from note_info where user_id=#{userId}
     </select>
 
@@ -37,5 +37,9 @@
     <delete id="removeByNoteId">
         delete from note_info where note_id=#{noteId}
     </delete>
+
+    <select id="findByCategoryIdAndUserId">
+        select * from note_info where category_id=#{categoryId} and user_id=#{userId}
+    </select>
 
 </mapper>

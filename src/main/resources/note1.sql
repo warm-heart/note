@@ -85,7 +85,7 @@ CREATE TABLE `note_share` (
 `share_id` bigint NOT NULL AUTO_INCREMENT,
 `user_id` bigint NOT NULL,
 `note_id` bigint NOT NULL ,
-`love_count` bigint  comment '点赞数',
+`love_count` bigint default '0'  comment '点赞数',
 `create_time` timestamp NOT NULL default current_timestamp comment '创建时间',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
 PRIMARY KEY (`share_id`),
@@ -93,7 +93,6 @@ key `idx_love_count` (`love_count`),
 key `idx_user_id` (`user_id`),
 key `idx_note_id` (`note_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 comment'笔记分享表';
-
 
 
 

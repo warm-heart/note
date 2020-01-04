@@ -3,7 +3,7 @@ package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.cloud.note.VO.ServiceResult;
+import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.User;
 import org.cloud.note.enums.ResultEnum;
 

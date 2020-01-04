@@ -1,10 +1,10 @@
 package org.cloud.note.web;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cloud.note.VO.ApiResponse;
+import org.cloud.note.dto.ApiResponse;
 
 
-import org.cloud.note.VO.ServiceResult;
+import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.exception.UserException;
 import org.cloud.note.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

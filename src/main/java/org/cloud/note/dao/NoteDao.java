@@ -46,7 +46,7 @@ public interface NoteDao {
      */
     List<Note> findAllNoteByPage(@Param(value = "page") Integer page,
                                  @Param(value = "size") Integer size,
-                                 @Param(value = "userId")Integer userId);
+                                 @Param(value = "userId") Integer userId);
 
 
     /**
@@ -57,4 +57,7 @@ public interface NoteDao {
     Integer saveNote(Note note);
 
     Integer removeByNoteId(Integer noteId);
+
+    List<Note> findByCategoryIdAndUserId(@Param(value = "categoryId") Integer categoryId,
+                                         @Param(value = "userId") Integer userId);
 }

@@ -1,4 +1,4 @@
-package org.cloud.note.VO;
+package org.cloud.note.dto;
 
 import lombok.Data;
 

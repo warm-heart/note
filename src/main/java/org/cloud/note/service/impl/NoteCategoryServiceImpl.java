@@ -1,7 +1,7 @@
 package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.cloud.note.VO.ServiceResult;
+import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.NoteCategoryDao;
 import org.cloud.note.entity.NoteCategory;
 import org.cloud.note.enums.ResultEnum;

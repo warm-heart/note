@@ -1,8 +1,8 @@
 package org.cloud.note.web;
 
 
-import org.cloud.note.VO.ApiResponse;
-import org.cloud.note.VO.ServiceResult;
+import org.cloud.note.dto.ApiResponse;
+import org.cloud.note.dto.ServiceResult;
 
 import org.cloud.note.entity.User;
 import org.cloud.note.service.LoginService;

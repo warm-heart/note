@@ -1,8 +1,10 @@
 package org.cloud.note.dto;
 
 import lombok.Data;
+import org.cloud.note.entity.Note;
+import org.cloud.note.entity.NoteCategory;
 
-import javax.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 
@@ -12,15 +14,9 @@ import java.util.List;
  */
 @Data
 public class NoteDetailDTO {
-    private Integer noteId;
-    @NotEmpty(message = "笔记标题不能为空")
-    private String noteTitle;
-    @NotEmpty(message = "笔记描述不能为空")
-    private String noteDescription;
-    @NotEmpty(message = "笔记内容不能为空")
-    private String noteContext;
 
+    private Note note;
+    private NoteCategory noteCategory;
+    private String userName;
     private List<String> noteTagList;
-    @NotEmpty(message = "笔记所在分类不能为空")
-    private String categoryName;
 }
