@@ -38,7 +38,7 @@
         delete from note_info where note_id=#{noteId}
     </delete>
 
-    <select id="findByCategoryIdAndUserId">
+    <select id="findByCategoryIdAndUserId" resultType="org.cloud.note.entity.Note">
         select * from note_info where category_id=#{categoryId} and user_id=#{userId}
     </select>
 

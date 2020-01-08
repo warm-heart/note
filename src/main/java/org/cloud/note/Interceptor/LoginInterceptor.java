@@ -29,9 +29,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         if (tokenUtils.verify(token)) {
             return true;
-        } else
-            log.info("token不合法,token: {}", token);
-        throw new UnauthorizedException(ResultEnum.UNAUTHORIZED);
+        } else {
+            log.error(  "token不合法,token: {}", token);
+            throw new UnauthorizedException(ResultEnum.UNAUTHORIZED);
+        }
     }
 
     @Override

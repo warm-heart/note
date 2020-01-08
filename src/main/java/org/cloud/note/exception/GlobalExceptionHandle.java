@@ -25,21 +25,21 @@ public class GlobalExceptionHandle {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse UnauthorizedException(Exception e, HttpServletRequest request) {
-        log.error("未认证 , uri: {} , caused by:{} ", request.getRequestURI(), e);
+        log.error("未认证 , uri: {} , caused by: {} ", request.getRequestURI(), e);
         return ApiResponse.error(e.getMessage());
     }
 
     @ExceptionHandler(UserException.class)
     @ResponseBody
     public ApiResponse UserException(Exception e, HttpServletRequest request) {
-        log.error("用户相关异常 , uri: {} , caused by{}: ", request.getRequestURI(), e);
+        log.error("用户相关异常 , uri: {} , caused by: {}", request.getRequestURI(), e);
         return ApiResponse.error(e.getMessage());
     }
 
     @ExceptionHandler(NoteException.class)
     @ResponseBody
     public ApiResponse NoteException(Exception e, HttpServletRequest request) {
-        log.error("笔记相关异常 , uri: {} , caused by{}: ", request.getRequestURI(), e.getMessage());
+        log.error("笔记相关异常 , uri: {} , caused by: {}", request.getRequestURI(), e.getMessage());
         return ApiResponse.error(e.getMessage());
     }
 

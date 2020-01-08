@@ -91,6 +91,9 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(userId))
             throw new UnauthorizedException(ResultEnum.UNAUTHORIZED);
         User user = userDao.findByUserId(Integer.valueOf(userId));
+        if (user == null) {
+            throw new UserException("请重新登录");
+        }
         user.setUserIcon(url);
         userDao.updateUser(user);
         try {

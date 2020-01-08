@@ -9,6 +9,7 @@ import org.cloud.note.entity.Note;
 import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,6 @@ public class NoteController {
 
 
     @PostMapping(value = "/createNote")
-    @ResponseBody()
     public ApiResponse<String> createNote(@RequestBody @Valid NoteVO noteVO, HttpServletRequest request, HttpServletResponse response) {
 
         String token = request.getHeader("token");
@@ -41,10 +41,9 @@ public class NoteController {
 
 
     @PostMapping(value = "/myNote")
-    @ResponseBody()
     public ApiResponse<NoteDTO> MyNote(@RequestParam(defaultValue = "1") Integer page,
-                                          @RequestParam(defaultValue = "5") Integer size,
-                                          HttpServletRequest request) {
+                                       @RequestParam(defaultValue = "5") Integer size,
+                                       HttpServletRequest request) {
 
         String token = request.getHeader("token");
         ServiceResult<NoteDTO> serviceResult = noteService.getNoteByPage(page, size, token);
@@ -57,10 +56,9 @@ public class NoteController {
 
 
     @PostMapping(value = "/noteDetail")
-    @ResponseBody()
     public ApiResponse<NoteDetailDTO> noteDetail(Integer noteId,
-                                                      HttpServletRequest request) {
-        if (noteId == null) {
+                                                 HttpServletRequest request) {
+        if (StringUtils.isEmpty(String.valueOf(noteId))) {
             return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
         }
         ServiceResult<NoteDetailDTO> serviceResult = noteService.getNoteByNoteId(noteId);
@@ -79,6 +77,7 @@ public class NoteController {
         if (noteId == null) {
             return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
         }
+
         ServiceResult<String> serviceResult = noteService.removeByNoteId(noteId);
 
         if (serviceResult.isSuccess()) {
@@ -102,14 +101,13 @@ public class NoteController {
     }
 
 
-    @PostMapping(value = "/getByCategoryIdAndUserId")
-    @ResponseBody()
-    public ApiResponse<List<Note>> getByCategoryIdAndUserId(Integer categoryId,
-                                                            HttpServletRequest request) {
+    @PostMapping(value = "/findNoteByCategory")
+    public ApiResponse<List<Note>> findNoteByCategory(Integer categoryId,
+                                                      HttpServletRequest request) {
 
-        //todo
+
         String token = request.getHeader("token");
-        ServiceResult<List<Note>> serviceResult = noteService.getByCategoryIdAndUserId(categoryId, token);
+        ServiceResult<List<Note>> serviceResult = noteService.getNoteByCategoryIdAndUserId(categoryId, token);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -119,7 +117,7 @@ public class NoteController {
 
 
     @PostMapping(value = "/shareNote")
-    @ResponseBody()
+
     public ApiResponse<String> shareNote(Integer noteId,
                                          HttpServletRequest request) {
         if (noteId == null) {
@@ -132,4 +130,21 @@ public class NoteController {
         }
         return ApiResponse.error(serviceResult.getMessage());
     }
+
+
+    @PostMapping(value = "/cancelShareNote")
+    public ApiResponse<String> cancelShareNote(Integer noteId,
+                                               HttpServletRequest request) {
+        if (noteId == null) {
+            return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
+        }
+        ServiceResult<String> serviceResult = noteService.cancelShareNote(noteId);
+
+        if (serviceResult.isSuccess()) {
+            return ApiResponse.success(serviceResult.getResult());
+        }
+        return ApiResponse.error(serviceResult.getMessage());
+    }
+
+
 }

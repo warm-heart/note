@@ -19,12 +19,14 @@ import org.cloud.note.service.NoteShareService;
 import org.cloud.note.service.NoteTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +46,9 @@ public class NoteServiceImpl implements NoteService {
     NoteTagService noteTagService;
     @Autowired
     NoteShareService noteShareService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -70,6 +75,8 @@ public class NoteServiceImpl implements NoteService {
         // 1 根据userId和笔记分类name查出笔记分类
         NoteCategory noteCategory = noteCategoryService.
                 getNoteCategoryByNameAndUserId(noteVO.getCategoryName(), userId).getResult();
+        if (noteCategory == null)
+            throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
         // 2 组装note 插入到数据库
         Note note = new Note();
         note.setNoteContext(noteVO.getNoteContext());
@@ -97,18 +104,26 @@ public class NoteServiceImpl implements NoteService {
     @Override
     @Transactional
     public ServiceResult<NoteDetailDTO> getNoteByNoteId(Integer noteId) {
-        // 1 查出Note
-        NoteDetailDTO noteDetailDTO = new NoteDetailDTO();
-        Note note = noteDao.findByNoteId(noteId);
-        // 2 根据noteId查出标签
-        List<NoteTag> noteTagList = noteTagService.getByNoteId(noteId);
-        // 3 根据noteId查出笔记所属分类
-        NoteCategory noteCategory = noteCategoryService.getNoteCategoryById(note.getCategoryId()).getResult();
-        //4 组装DTO返回前端
-        noteDetailDTO.setNote(note);
-        noteDetailDTO.setNoteCategory(noteCategory);
-        List<String> labels = noteTagList.stream().map(e -> e.getNoteLabel()).collect(Collectors.toList());
-        noteDetailDTO.setNoteTagList(labels);
+        NoteDetailDTO noteDetailDTO = (NoteDetailDTO) redisTemplate.opsForValue().get(noteId.toString());
+        if (noteDetailDTO == null) {
+            // 1 查出Note
+            NoteDetailDTO noteDetailDTO1 = new NoteDetailDTO();
+            Note note = noteDao.findByNoteId(noteId);
+            if (note == null) {
+                throw new NoteException(ResultEnum.NOTE_NOT_FOUND);
+            }
+            // 2 根据noteId查出标签
+            List<NoteTag> noteTagList = noteTagService.getByNoteId(noteId);
+            // 3 根据noteId查出笔记所属分类
+            NoteCategory noteCategory = noteCategoryService.getNoteCategoryById(note.getCategoryId()).getResult();
+            //4 组装DTO返回前端
+            noteDetailDTO1.setNote(note);
+            noteDetailDTO1.setNoteCategory(noteCategory);
+            List<String> labels = noteTagList.stream().map(e -> e.getNoteLabel()).collect(Collectors.toList());
+            noteDetailDTO1.setNoteTagList(labels);
+            redisTemplate.opsForValue().set(noteId.toString(), noteDetailDTO1, 1, TimeUnit.HOURS);
+            return ServiceResult.success(noteDetailDTO1);
+        }
         return ServiceResult.success(noteDetailDTO);
 
     }
@@ -146,7 +161,8 @@ public class NoteServiceImpl implements NoteService {
         //3 修改Note
 
         Note note = noteDao.findByNoteId(noteVO.getNoteId());
-
+        if (note == null)
+            throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
         note.setNoteTitle(noteVO.getNoteTitle());
         note.setNoteDescription(noteVO.getNoteDescription());
         note.setNoteContext(noteVO.getNoteContext());
@@ -164,7 +180,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public ServiceResult<List<Note>> getByCategoryIdAndUserId(Integer categoryId, String token) {
+    public ServiceResult<List<Note>> getNoteByCategoryIdAndUserId(Integer categoryId, String token) {
         Integer userId = Integer.valueOf(stringRedisTemplates.opsForValue().get(token));
         List<Note> noteList = noteDao.findByCategoryIdAndUserId(categoryId, userId);
         if (CollectionUtils.isEmpty(noteList)) {
@@ -178,16 +194,17 @@ public class NoteServiceImpl implements NoteService {
     public ServiceResult<String> shareNote(Integer noteId) {
         // 1 设置状态为1 已分享；
         Note note = noteDao.findByNoteId(noteId);
+        if (note == null)
+            throw new NoteException(ResultEnum.NOTE_NOT_FOUND);
         note.setShareStatus(1);
         Integer res = noteDao.updateNote(note);
-
 
         //2 添加到分享表
         NoteShare noteShare = new NoteShare();
         noteShare.setNoteId(noteId);
         noteShare.setUserId(note.getUserId());
-        noteShareService.saveShare(noteShare);
-        if (res == 1) {
+        boolean flag = noteShareService.saveShare(noteShare);
+        if (res == 1 && flag) {
             return ServiceResult.success("分享成功");
         }
         throw new NoteException("分享失败");
@@ -199,24 +216,16 @@ public class NoteServiceImpl implements NoteService {
     public ServiceResult<String> cancelShareNote(Integer noteId) {
         // 1 设置状态为0 未分享；
         Note note = noteDao.findByNoteId(noteId);
+        if (note == null)
+            throw new NoteException(ResultEnum.NOTE_NOT_FOUND);
         note.setShareStatus(0);
         Integer res = noteDao.updateNote(note);
-
         //2 删除分享表
         noteShareService.removeShareByNoteId(noteId);
         if (res == 1) {
             return ServiceResult.success("取消分享成功");
         }
         throw new NoteException("取消分享失败");
-    }
-
-    @Override
-    public ServiceResult<String> love(Integer noteId) {
-        boolean flag = noteShareService.incrementLoveCount(noteId);
-        if (flag) {
-            return ServiceResult.success("点赞成功");
-        }
-        return ServiceResult.error("点赞失败");
     }
 
 

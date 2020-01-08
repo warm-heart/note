@@ -14,4 +14,15 @@
     <update id="incrementLoveCount">
         update note_share set love_count=love_count+1 where note_id=#{noteId}
     </update>
+
+
+    <select id="findNoteShareByPage" resultType="org.cloud.note.VO.NoteShareVO">
+        select * from note_info,note_share where note_share.note_id=note_info.note_id  limit #{page},#{size}
+    </select>
+
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from note_share
+    </select>
+
 </mapper>

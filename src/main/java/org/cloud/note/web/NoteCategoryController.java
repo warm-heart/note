@@ -23,7 +23,6 @@ public class NoteCategoryController {
     private NoteCategoryService noteCategoryService;
 
     @PostMapping(value = "/getNoteCategory")
-    @ResponseBody()
     public ApiResponse<List<NoteCategory>> createNote(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("token");
         ServiceResult<List<NoteCategory>> serviceResult = noteCategoryService.getNoteCategoryByUserId(token);

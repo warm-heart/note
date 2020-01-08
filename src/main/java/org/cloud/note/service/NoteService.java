@@ -66,7 +66,7 @@ public interface NoteService {
      * @param token
      * @return
      */
-    ServiceResult<List<Note>> getByCategoryIdAndUserId(Integer categoryId, String token);
+    ServiceResult<List<Note>> getNoteByCategoryIdAndUserId(Integer categoryId, String token);
 
     /**
      * 分享笔记
@@ -84,11 +84,6 @@ public interface NoteService {
     ServiceResult<String> cancelShareNote(Integer noteId);
 
 
-    /**
-     * 点赞
-     * @param noteId
-     * @return
-     */
-    ServiceResult<String> love(Integer noteId);
+
 
 }

@@ -1,6 +1,11 @@
 package org.cloud.note.service;
 
+
+import org.cloud.note.dto.NoteShareDTO;
+import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.NoteShare;
+
+
 
 /**
  * @author wangqianlong
@@ -15,4 +20,15 @@ public interface NoteShareService {
     boolean removeShareByNoteId(Integer noteId);
 
     boolean incrementLoveCount(Integer noteId);
+
+    ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size);
+
+
+
+    /**
+     * 点赞
+     * @param noteId
+     * @return
+     */
+    ServiceResult<String> love(Integer noteId);
 }
