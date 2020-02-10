@@ -24,11 +24,14 @@ public interface NoteCategoryDao {
 
     NoteCategory findByCategoryId(Integer categoryId);
 
-    Integer getTotal();
+    Integer getTotal(Integer userId);
 
     Integer saveNoteCategory(NoteCategory noteCategory);
 
 
     NoteCategory getNoteCategoryByNameAndUserId(@Param(value = "categoryName") String categoryName,
                                     @Param(value = "userId") Integer userId);
+
+    Integer removeNoteCategory(@Param(value = "categoryName") String categoryName,
+                               @Param(value = "userId") Integer userId);
 }

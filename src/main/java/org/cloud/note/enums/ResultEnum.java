@@ -16,41 +16,58 @@ public enum ResultEnum {
 
     USER_NOT_FOUND(26, "登录失败, 未找到用户，前往请注册"),
 
-    USER_ACCOUNT_LOCK(28, "您的账户已被封禁，请联系管理员"),
+    USER_ACCOUNT_LOCK(26, "您的账户已被封禁，请联系管理员"),
+
+    USER_CREATE_FAIL(26, "注册失败，请重试"),
+
+    USER_NAME_IS_ALREADY_USED(26, "用户名已被使用"),
+
+    USER_CREATE_SUCCESS(26, "注册成功，快去登录吧！"),
+
+    USER_UPDATE_FAIL(26, "修改个人信息失败，请重试"),
+
+    USER_UPDATE_SUCCESS(26, "修改个人信息成功"),
 
 
-    YOUR_NOTE_IS_EMPTY(29, "您还没有创建笔记，赶快去创建吧"),
+    YOUR_NOTE_IS_EMPTY(36, "您还没有创建笔记，赶快去创建吧"),
 
-    CREATE_NOTE_FAIL(32, "创建笔记失败，请重新创建"),
+    CREATE_NOTE_FAIL(36, "创建笔记失败，请重新创建"),
 
-    CREATE_NOTE_SUCCESS(32, "创建笔记成功"),
+    CREATE_NOTE_SUCCESS(36, "创建笔记成功"),
 
-    REMOVE_NOTE_SUCCESS(32, "删除笔记成功"),
+    REMOVE_NOTE_SUCCESS(36, "删除笔记成功"),
 
-    REMOVE_NOTE_FAIL(32, "删除笔记失败"),
+    REMOVE_NOTE_FAIL(36, "删除笔记失败"),
 
-    UPDATE_NOTE_SUCCESS(32, "修改笔记成功"),
+    UPDATE_NOTE_SUCCESS(36, "修改笔记成功"),
 
-    UPDATE_NOTE_FAIL(32, "修改笔记失败"),
+    UPDATE_NOTE_FAIL(36, "修改笔记失败"),
 
-    NOTE_NOT_FOUND(35, "未找到笔记"),
-
-
-
-    NOTE_CATEGORY_IS_EMPTY(36, "笔记分类为空，请创建笔记分类"),
-
-    NOTE_CATEGORY_NOT_FOUND(36, "未找到此笔记分类，请创建笔记分类"),
-
-    CREATE_NOTE_CATEGORY_SUCCESS(30, "创建笔记分类成功"),
-
-    CREATE_NOTE_CATEGORY_FAIL(30, "创建笔记分类失败，请重新创建"),
-
-    NOTE_CATEGORY_NOT_LESS_ONE(31, "不能删除，至少要有一个笔记分类"),
+    NOTE_NOT_FOUND(36, "未找到笔记"),
 
 
-    CREATE_NOTE_TAG_FAIL(33, "标签创建失败，请重新创建"),
+    NOTE_CATEGORY_IS_EMPTY(46, "笔记分类为空，请创建笔记分类"),
 
-    CREATE_NOTE_TAG_SUCCESS(34, "标签创建成功"),
+    NOTE_CATEGORY_NOT_FOUND(46, "未找到此笔记分类，请创建笔记分类"),
+
+    CREATE_NOTE_CATEGORY_SUCCESS(46, "创建笔记分类成功"),
+
+    CREATE_NOTE_CATEGORY_FAIL(46, "创建笔记分类失败，请重新创建"),
+
+    NOTE_CATEGORY_NOT_LESS_ONE(46, "您只有一个笔记分类，不能删除了哦！"),
+
+    NOTE_CATEGORY_REMOVE_SUCCESS(46, "笔记分类删除成功"),
+
+    NOTE_CATEGORY_REMOVE_FAIL(46, "笔记分类删除失败"),
+
+    NOTE_CATEGORY_UPDATE_SUCCESS(46, "修改笔记分类成功"),
+
+    NOTE_CATEGORY_UPDATE_FAIL(46, "修改笔记分类成功"),
+
+
+    CREATE_NOTE_TAG_FAIL(56, "标签创建失败，请重新创建"),
+
+    CREATE_NOTE_TAG_SUCCESS(56, "标签创建成功"),
 
 
     LOGOUT_SUCCESS(27, "登出成功"),;

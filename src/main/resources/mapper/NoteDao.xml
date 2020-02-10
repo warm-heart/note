@@ -41,5 +41,10 @@
     <select id="findByCategoryIdAndUserId" resultType="org.cloud.note.entity.Note">
         select * from note_info where category_id=#{categoryId} and user_id=#{userId}
     </select>
+    
+    
+    <delete id="removeByNoteCategoryId">
+        delete from note_info where category_id=#{noteCategoryId}
+    </delete>
 
 </mapper>

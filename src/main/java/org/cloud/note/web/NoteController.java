@@ -7,6 +7,7 @@ import org.cloud.note.dto.NoteDTO;
 import org.cloud.note.dto.NoteDetailDTO;
 import org.cloud.note.entity.Note;
 import org.cloud.note.enums.ResultEnum;
+
 import org.cloud.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -74,9 +75,6 @@ public class NoteController {
     @ResponseBody()
     public ApiResponse<String> removeNote(Integer noteId,
                                           HttpServletRequest request) {
-        if (noteId == null) {
-            return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
-        }
 
         ServiceResult<String> serviceResult = noteService.removeByNoteId(noteId);
 
@@ -89,7 +87,7 @@ public class NoteController {
 
     @PostMapping(value = "/updateNote")
     @ResponseBody()
-    public ApiResponse<String> updateNote(@RequestBody NoteVO noteVO,
+    public ApiResponse<String> updateNote(@RequestBody @Valid NoteVO noteVO,
                                           HttpServletRequest request) {
         String token = request.getHeader("token");
         ServiceResult<String> serviceResult = noteService.updateNote(noteVO, token);
@@ -104,7 +102,6 @@ public class NoteController {
     @PostMapping(value = "/findNoteByCategory")
     public ApiResponse<List<Note>> findNoteByCategory(Integer categoryId,
                                                       HttpServletRequest request) {
-
 
         String token = request.getHeader("token");
         ServiceResult<List<Note>> serviceResult = noteService.getNoteByCategoryIdAndUserId(categoryId, token);

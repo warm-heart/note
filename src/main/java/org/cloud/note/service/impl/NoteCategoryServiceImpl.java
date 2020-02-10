@@ -1,12 +1,15 @@
 package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cloud.note.dao.NoteDao;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.NoteCategoryDao;
+import org.cloud.note.entity.Note;
 import org.cloud.note.entity.NoteCategory;
 import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.exception.NoteException;
 import org.cloud.note.service.NoteCategoryService;
+import org.cloud.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,11 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    NoteService noteService;
+    @Autowired
+    private NoteDao noteDao;
 
 
     @Override
@@ -62,17 +70,62 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
     @Override
     @Transactional
-    public ServiceResult createNoteCategory(String categoryName, String categoryDescription,
-                                            Integer userId) {
+    public ServiceResult<String> createNoteCategory(String categoryName, String categoryDescription,
+                                                    Integer userId) {
         NoteCategory noteCategory = new NoteCategory();
         noteCategory.setCategoryName(categoryName);
         noteCategory.setCategoryDescription(categoryDescription);
         noteCategory.setUserId(userId);
         Integer res = noteCategoryDao.saveNoteCategory(noteCategory);
         if (res == 1) {
-            return ServiceResult.success(ResultEnum.CREATE_NOTE_CATEGORY_SUCCESS);
+            return ServiceResult.success(ResultEnum.CREATE_NOTE_CATEGORY_SUCCESS.getMessage());
         }
         throw new NoteException(ResultEnum.CREATE_NOTE_CATEGORY_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> removeNoteCategory(String categoryName, Integer userId) {
+        //1 如果笔记分类少于 1 则无法删除
+        Integer count = noteCategoryDao.getTotal(userId);
+        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryByNameAndUserId(categoryName, userId);
+        if (count <= 1) {
+            return ServiceResult.error(ResultEnum.NOTE_CATEGORY_NOT_LESS_ONE.getMessage());
+        }
+        if (noteCategory == null) {
+            throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
+        }
+
+        //2 删除笔记分类下的笔记
+        List<Note> notes = noteDao.findByCategoryIdAndUserId(noteCategory.getCategoryId(), userId);
+        try {
+            for (Note note : notes) {
+                noteService.removeByNoteId(note.getNoteId());
+            }
+        } catch (Exception e) {
+            throw new NoteException(ResultEnum.NOTE_CATEGORY_REMOVE_FAIL);
+        }
+        //3  删除笔记分类
+        Integer res = noteCategoryDao.removeNoteCategory(categoryName, userId);
+        if (res == 1) {
+            return ServiceResult.success(ResultEnum.NOTE_CATEGORY_REMOVE_SUCCESS.getMessage());
+        }
+        throw new NoteException(ResultEnum.NOTE_CATEGORY_REMOVE_FAIL);
+    }
+
+
+    @Override
+    @Transactional
+    public ServiceResult<String> updateNoteCategory(NoteCategory noteCategory) {
+
+        NoteCategory noteCategory1 = getNoteCategoryById(noteCategory.getCategoryId()).getResult();
+        noteCategory1.setCategoryDescription(noteCategory.getCategoryDescription());
+        noteCategory1.setCategoryName(noteCategory.getCategoryName());
+        Integer res = noteCategoryDao.updateNoteCategory(noteCategory1);
+        if (res == 1) {
+            return ServiceResult.success(ResultEnum.NOTE_CATEGORY_UPDATE_SUCCESS.getMessage());
+        }
+        throw new NoteException(ResultEnum.NOTE_CATEGORY_UPDATE_FAIL);
     }
 
 }

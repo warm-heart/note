@@ -11,6 +11,7 @@ create  table user (
 `user_password` varchar(64) NOT NULL comment '用户密码',
 `user_address` varchar(64)   comment '用户地址',
 `user_email` varchar (64)   comment '用户邮箱',
+`user_sex`tinyint(3) NOT NULL default  '0' comment '用户性别,默认0 男，1女',
 `user_phone` varchar(64)    comment '用户电话',
 `create_time` timestamp NOT NULL default current_timestamp comment '注册',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',

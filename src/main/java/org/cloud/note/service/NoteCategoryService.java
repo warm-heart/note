@@ -11,11 +11,55 @@ import java.util.List;
  */
 
 public interface NoteCategoryService {
+    /**
+     * 查找用户的笔记分类
+     *
+     * @param token token
+     * @return
+     */
     ServiceResult<List<NoteCategory>> getNoteCategoryByUserId(String token);
 
+    /**
+     * 根据笔记分类名查找用户的笔记分类
+     *
+     * @param categoryName
+     * @param userId
+     * @return
+     */
     ServiceResult<NoteCategory> getNoteCategoryByNameAndUserId(String categoryName, Integer userId);
 
+    /**
+     * 通过ID查找笔记分类信息
+     *
+     * @param categoryId
+     * @return
+     */
     ServiceResult<NoteCategory> getNoteCategoryById(Integer categoryId);
 
-    ServiceResult createNoteCategory(String category, String categoryDescription, Integer userId);
+    /**
+     * 创建笔记分类
+     *
+     * @param categoryName
+     * @param categoryDescription
+     * @param userId
+     * @return
+     */
+    ServiceResult<String> createNoteCategory(String categoryName, String categoryDescription, Integer userId);
+
+    /**
+     * 删除笔记分类
+     *
+     * @param categoryName
+     * @param userId
+     * @return
+     */
+    ServiceResult<String> removeNoteCategory(String categoryName, Integer userId);
+
+    /**
+     * 修改笔记分类信息
+     *
+     * @param noteCategory
+     * @return
+     */
+    ServiceResult<String> updateNoteCategory(NoteCategory noteCategory);
 }

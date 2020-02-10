@@ -5,9 +5,11 @@ import org.cloud.note.dto.ApiResponse;
 
 
 import org.cloud.note.dto.ServiceResult;
+import org.cloud.note.entity.User;
 import org.cloud.note.exception.UserException;
 import org.cloud.note.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +25,8 @@ import java.io.IOException;
 @RequestMapping("/user")
 @Slf4j
 public class UserController {
-
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
     @Autowired
     UserService userService;
 
@@ -93,4 +96,33 @@ public class UserController {
 
         return ApiResponse.success(url);
     }
+
+
+    @PostMapping("/userInfo")
+    public ApiResponse<User> userInfo(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
+        User user = userService.findByUserId(userId);
+        return ApiResponse.success(user);
+    }
+
+    @PostMapping("/createUser")
+    public ApiResponse<String> createUser(@RequestBody User user) {
+        ServiceResult result = userService.createUser(user);
+        if (result.isSuccess()) {
+            return ApiResponse.success((String) result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping("/updateUser")
+    public ApiResponse<String> updateUser(@RequestBody User user) {
+        ServiceResult result = userService.updateUser(user);
+        if (result.isSuccess()) {
+            return ApiResponse.success((String) result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
 }

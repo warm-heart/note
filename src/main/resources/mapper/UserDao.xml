@@ -16,8 +16,26 @@
         update user set user_password=#{userPassword},user_name=#{userName},
         nick_name=#{nickName},
         user_phone=#{userPhone},user_email=#{userEmail},
+        user_sex=#{userSex},
         user_address=#{userAddress},user_icon=#{userIcon}
         where user_id=#{userId}
+    </update>
+
+    <insert id="createUser" parameterType="org.cloud.note.entity.User"
+            useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        insert  into
+        user(user_name, nick_name, user_password, user_icon, user_address, user_email, user_phone,user_sex)
+        values (#{userName},#{nickName},#{userPassword},#{userIcon},#{userAddress},#{userEmail},
+        #{userPhone}),#{userSex},
+    </insert>
+
+
+    <update id="lockUser">
+         update user set user_status=1 where user_id=#{userId}
+    </update>
+
+    <update id="deBlock">
+        update user set user_status=0 where user_id=#{userId}
     </update>
 
 </mapper>

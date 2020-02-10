@@ -39,11 +39,10 @@ public class NoteShareServiceImpl implements NoteShareService {
     @Transactional
     public boolean removeShareByNoteId(Integer noteId) {
         Integer res = noteShareDao.removeShareByNoteId(noteId);
-        return true;
-     /*   if (res==1){
+        if (res >= 1) {
             return true;
         }
-        throw new NoteException("取消分享失败");*/
+        throw new NoteException("取消分享失败");
     }
 
     @Override
@@ -64,6 +63,12 @@ public class NoteShareServiceImpl implements NoteShareService {
             page = (page - 1) * size;
         }
         List<NoteShareVO> noteShareVOList = noteShareDao.findNoteShareByPage(page, size);
+        for (NoteShareVO noteShareVO : noteShareVOList) {
+            String str = noteShareVO.getNoteContext();
+            str = str.replaceAll("<.+?>", "");
+            str = str.replaceAll("<a>\\s*|\t|\r|\n|&nbsp;|</a>", "");
+            noteShareVO.setNoteContext(str);
+        }
         Integer total = noteShareDao.getTotal();
         NoteShareDTO noteShareDTO = new NoteShareDTO();
         noteShareDTO.setNoteShareVOS(noteShareVOList);

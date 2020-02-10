@@ -42,6 +42,7 @@ public class LoginController {
             List<String> res = new ArrayList<>();
             res.add((String) serviceResult.getResult());
             res.add(user.getUserIcon());
+            res.add(user.getUserName());
             return ApiResponse.success(res);
         }
         return ApiResponse.error(serviceResult.getMessage());
@@ -50,9 +51,12 @@ public class LoginController {
 
 
     @PostMapping("/register")
-    public ApiResponse register(@RequestBody @Valid User user1) {
-        //todo 注册建立默认笔记本
-        return null;
+    public ApiResponse register(@RequestBody @Valid User user) {
+        ServiceResult result = userService.createUser(user);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
     }
 
     @PostMapping("/logout")

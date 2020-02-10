@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
 
     /**
-     * @param userName  用户名
+     * @param userName 用户名
      * @return
      */
     User findByUserName(String userName);
@@ -26,8 +26,33 @@ public interface UserDao {
 
     /**
      * 修改用户信息
+     *
      * @param user
      * @return
      */
     Integer updateUser(User user);
+
+    /**
+     * 创建用户
+     *
+     * @param user
+     * @return
+     */
+    Integer createUser(User user);
+
+    /**
+     * 封禁用户
+     *
+     * @param userId
+     * @return
+     */
+    Integer lockUser(Integer userId);
+
+    /**
+     * 解封用户
+     *
+     * @param userId
+     * @return
+     */
+    Integer deBlock(Integer userId);
 }

@@ -8,13 +8,16 @@ import org.cloud.note.enums.ResultEnum;
 
 import org.cloud.note.exception.UnauthorizedException;
 import org.cloud.note.exception.UserException;
+import org.cloud.note.service.NoteCategoryService;
 import org.cloud.note.service.UserService;
+import org.cloud.note.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +35,9 @@ public class UserServiceImpl implements UserService {
     StringRedisTemplate stringRedisTemplate;
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    NoteCategoryService noteCategoryService;
 
     @Override
     public User findByUserName(String userName) {
@@ -103,6 +109,47 @@ public class UserServiceImpl implements UserService {
             throw new UserException("头像上传失败，请重新上传");
         }
         return ServiceResult.success(url);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> createUser(User user) {
+        //检查名称是否被注册过
+        User user1 = userDao.findByUserName(user.getUserName());
+        if (user1 != null) {
+            throw new UserException(ResultEnum.USER_NAME_IS_ALREADY_USED);
+        }
+        // 1 保存用户
+        user.setUserPassword(MD5Utils.encode(user.getUserPassword()));
+        user.setUserIcon("http://localhost:8080/Image/defualt_avatar.jpg");
+        Integer res = userDao.createUser(user);
+
+        // 2 创建默认笔记本
+        noteCategoryService.createNoteCategory("默认笔记分类", "默认笔记分类", user.getUserId());
+        if (res == 1) {
+            return ServiceResult.success(ResultEnum.USER_CREATE_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_CREATE_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> updateUser(User user) {
+
+        User user1 = findByUserId(user.getUserId());
+        user1.setUserEmail(user.getUserEmail());
+        user1.setNickName(user.getNickName());
+        user1.setUserPhone(user.getUserPhone());
+        user1.setUserAddress(user.getUserAddress());
+        user1.setUserPassword(MD5Utils.encode(user1.getUserPassword()));
+        user1.setUserName(user.getUserName());
+        user1.setUserSex(user.getUserSex());
+
+        Integer res = userDao.updateUser(user1);
+        if (res == 1) {
+            return ServiceResult.success(ResultEnum.USER_UPDATE_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_UPDATE_FAIL);
     }
 
 }

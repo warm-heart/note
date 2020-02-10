@@ -21,7 +21,7 @@
     </select>
 
     <select id="getTotal" resultType="java.lang.Integer">
-        select count(*) from note_category
+        select count(*) from note_category where user_id=#{userId}
     </select>
 
     <insert id="saveNoteCategory" parameterType="org.cloud.note.entity.NoteCategory">
@@ -32,4 +32,8 @@
     <select id="getNoteCategoryByNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
         select * from  note_category where category_name=#{categoryName} and user_id=#{userId}
     </select>
+
+    <delete id="removeNoteCategory">
+        delete from  note_category where category_name=#{categoryName} and user_id=#{userId}
+    </delete>
 </mapper>

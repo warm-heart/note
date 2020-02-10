@@ -51,4 +51,18 @@ public class UserDaoTest extends NoteApplicationTests {
     void findByUserId() {
         System.out.println(userDao.findByUserId(2));
     }
+
+
+    @Test
+    void lockUser() {
+        Integer res = userDao.lockUser(1);
+        System.out.println(res);
+    }
+
+
+    @Test
+    void deBlock() {
+        Integer res = userDao.deBlock(1);
+        System.out.println(res);
+    }
 }

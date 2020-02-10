@@ -60,4 +60,6 @@ public interface NoteDao {
 
     List<Note> findByCategoryIdAndUserId(@Param(value = "categoryId") Integer categoryId,
                                          @Param(value = "userId") Integer userId);
+
+    Integer removeByNoteCategoryId(Integer noteCategoryId);
 }

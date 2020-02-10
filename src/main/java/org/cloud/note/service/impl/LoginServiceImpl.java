@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,6 +57,5 @@ public class LoginServiceImpl implements LoginService {
         stringRedisTemplate.delete(token);
         return ServiceResult.success(ResultEnum.LOGOUT_SUCCESS.getMessage());
     }
-
 
 }

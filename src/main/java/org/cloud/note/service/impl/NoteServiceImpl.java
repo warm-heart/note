@@ -64,6 +64,12 @@ public class NoteServiceImpl implements NoteService {
             return ServiceResult.error(ResultEnum.YOUR_NOTE_IS_EMPTY.getMessage());
         }
         List<Note> noteList = noteDao.findAllNoteByPage(page, size, userId);
+        for (Note note : noteList) {
+            String str = note.getNoteContext();
+            str = str.replaceAll("<.+?>", "");
+            str = str.replaceAll("<a>\\s*|\t|\r|\n|&nbsp;|</a>", "");
+            note.setNoteContext(str);
+        }
         NoteDTO noteDTO = new NoteDTO(noteList, total);
         return ServiceResult.success(noteDTO);
     }
@@ -131,10 +137,19 @@ public class NoteServiceImpl implements NoteService {
     @Override
     @Transactional
     public ServiceResult<String> removeByNoteId(Integer noteId) {
+        Note note = noteDao.findByNoteId(noteId);
+        if (note == null) {
+            throw new NoteException(ResultEnum.NOTE_NOT_FOUND);
+        }
         // 1 根据NoteId删除Note
         Integer res = noteDao.removeByNoteId(noteId);
         // 2 删除对应的标签
         noteTagService.removeByNoteId(noteId);
+        if (note.getShareStatus() == 1)
+            // 3删除分享表
+            noteShareService.removeShareByNoteId(noteId);
+        // 4 删除redis
+        redisTemplate.delete(noteId.toString());
         if (res == 1) {
             return ServiceResult.success(ResultEnum.REMOVE_NOTE_SUCCESS.getMessage());
         }
@@ -148,7 +163,6 @@ public class NoteServiceImpl implements NoteService {
 
         //1 删除笔记标签
         noteTagService.removeByNoteId(noteVO.getNoteId());
-
         //2 添加新标签
         if (!CollectionUtils.isEmpty(noteVO.getNoteTagList())) {
             for (String s : noteVO.getNoteTagList()) {
@@ -159,7 +173,6 @@ public class NoteServiceImpl implements NoteService {
         NoteCategory noteCategory = noteCategoryService
                 .getNoteCategoryByNameAndUserId(noteVO.getCategoryName(), userId).getResult();
         //3 修改Note
-
         Note note = noteDao.findByNoteId(noteVO.getNoteId());
         if (note == null)
             throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
@@ -167,14 +180,12 @@ public class NoteServiceImpl implements NoteService {
         note.setNoteDescription(noteVO.getNoteDescription());
         note.setNoteContext(noteVO.getNoteContext());
         note.setCategoryId(noteCategory.getCategoryId());
-
         Integer res = noteDao.updateNote(note);
-
-
+        //4 删除redis
+        redisTemplate.delete(noteVO.getNoteId().toString());
         if (res == 1) {
             return ServiceResult.success(ResultEnum.UPDATE_NOTE_SUCCESS.getMessage());
         }
-
         //修改失败事务回滚
         throw new NoteException(ResultEnum.UPDATE_NOTE_FAIL);
     }
@@ -186,12 +197,19 @@ public class NoteServiceImpl implements NoteService {
         if (CollectionUtils.isEmpty(noteList)) {
             return ServiceResult.error(ResultEnum.NOTE_NOT_FOUND.getMessage());
         }
+        for (Note note : noteList) {
+            String str = note.getNoteContext();
+            str = str.replaceAll("<.+?>", "");
+            str = str.replaceAll("<a>\\s*|\t|\r|\n|&nbsp;|</a>", "");
+            note.setNoteContext(str);
+        }
         return ServiceResult.success(noteList);
     }
 
     @Override
     @Transactional
     public ServiceResult<String> shareNote(Integer noteId) {
+        redisTemplate.delete(noteId.toString());
         // 1 设置状态为1 已分享；
         Note note = noteDao.findByNoteId(noteId);
         if (note == null)
@@ -204,6 +222,7 @@ public class NoteServiceImpl implements NoteService {
         noteShare.setNoteId(noteId);
         noteShare.setUserId(note.getUserId());
         boolean flag = noteShareService.saveShare(noteShare);
+        redisTemplate.delete(noteId.toString());
         if (res == 1 && flag) {
             return ServiceResult.success("分享成功");
         }

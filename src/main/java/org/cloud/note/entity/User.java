@@ -24,6 +24,7 @@ public class User implements Serializable {
     private String userIcon;
     private String userAddress;
     private String userEmail;
+    private Integer userSex;
     private String userPhone;
     private Integer roleId;
     private Integer userStatus;

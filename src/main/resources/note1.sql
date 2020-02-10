@@ -11,6 +11,7 @@ create  table user (
 `user_icon` varchar(128) NOT NULL comment '用户头像',
 `user_address` varchar(64)   comment '用户地址',
 `user_email` varchar (64)   comment '用户邮箱',
+`user_sex`tinyint(3) NOT NULL default  '0' comment '用户性别,默认0 男，1女',
 `user_phone` varchar(64)    comment '用户电话',
 `user_status`tinyint(3) NOT NULL default  '0' comment '用户状态,默认0 正常，1封禁',
 `role_id` bigint not null  default '1' comment '权限 默认为用户',

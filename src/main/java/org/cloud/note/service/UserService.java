@@ -26,9 +26,27 @@ public interface UserService {
 
     /**
      * 修改用户头像
-     * @param file 头像
+     *
+     * @param file  头像
      * @param token token
      * @return
      */
     ServiceResult upUserAvatar(MultipartFile file, String token);
+
+    /**
+     * 创建用户
+     *
+     * @param user 用户
+     * @return
+     */
+    ServiceResult<String> createUser(User user);
+
+
+    /**
+     * 修改个人信息
+     *
+     * @param user 用户
+     * @return
+     */
+    ServiceResult<String> updateUser(User user);
 }
