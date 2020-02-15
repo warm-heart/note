@@ -38,4 +38,12 @@
         update user set user_status=0 where user_id=#{userId}
     </update>
 
+
+    <select id="getAllUser" resultType="org.cloud.note.entity.User">
+        select  * from  user limit #{page},#{size}
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from user
+    </select>
 </mapper>

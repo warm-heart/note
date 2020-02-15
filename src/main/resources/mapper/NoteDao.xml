@@ -20,12 +20,17 @@
 
     </update>
 
-    <select id="findAllNoteByPage" resultType="org.cloud.note.entity.Note">
+    <select id="findAllNoteByPageAndUserId" resultType="org.cloud.note.entity.Note">
         select  * from  note_info where user_id=#{userId} limit #{page},#{size}
     </select>
 
-    <select id="getTotal" resultType="java.lang.Integer">
+    <select id="getTotalByUserId" resultType="java.lang.Integer">
         select count(*) from note_info where user_id=#{userId}
+    </select>
+
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(*) from note_info
     </select>
 
     <insert id="saveNote" parameterType="org.cloud.note.entity.Note"
@@ -41,10 +46,28 @@
     <select id="findByCategoryIdAndUserId" resultType="org.cloud.note.entity.Note">
         select * from note_info where category_id=#{categoryId} and user_id=#{userId}
     </select>
-    
-    
+
+
     <delete id="removeByNoteCategoryId">
         delete from note_info where category_id=#{noteCategoryId}
     </delete>
 
+
+    <select id="findByTime" resultType="org.cloud.note.entity.Note">
+        select * from note_info where <![CDATA[ update_time >= #{startTime}]]>
+        and <![CDATA[ update_time <= #{endTime}]]>
+
+    </select>
+
+
+    <select id="findByKeyWord" resultType="org.cloud.note.entity.Note">
+
+          select * from  note_info where user_id=#{userId} and note_title like CONCAT('%',#{keyWord},'%')
+
+    </select>
+
+
+    <select id="findAllNoteByPage" resultType="org.cloud.note.entity.Note">
+        select  * from  note_info  limit #{page},#{size}
+    </select>
 </mapper>

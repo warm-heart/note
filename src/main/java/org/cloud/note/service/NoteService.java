@@ -22,7 +22,7 @@ public interface NoteService {
      * @param token
      * @return
      */
-    ServiceResult<NoteDTO> getNoteByPage(Integer page, Integer size, String token);
+    ServiceResult<NoteDTO> getAllNoteByPageAndUserId(Integer page, Integer size, String token);
 
 
     /**
@@ -84,6 +84,5 @@ public interface NoteService {
     ServiceResult<String> cancelShareNote(Integer noteId);
 
 
-
-
+    ServiceResult<List<Note>> search(String noteName,String token);
 }

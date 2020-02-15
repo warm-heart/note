@@ -6,6 +6,8 @@ import org.cloud.note.entity.Note;
 import org.cloud.note.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,21 +40,29 @@ public interface NoteDao {
 
 
     /**
-     * 分页获取数据
+     * 分页获取用户的笔记
      *
      * @param page 页数开始的下标
      * @param size 每页数量
      * @return
      */
-    List<Note> findAllNoteByPage(@Param(value = "page") Integer page,
+    List<Note> findAllNoteByPageAndUserId(@Param(value = "page") Integer page,
                                  @Param(value = "size") Integer size,
                                  @Param(value = "userId") Integer userId);
 
 
     /**
-     * @return 获取所有条数
+     * @return 获取用户的所有条数
      */
-    Integer getTotal(Integer userId);
+    Integer getTotalByUserId(Integer userId);
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    Integer getTotal();
+
 
     Integer saveNote(Note note);
 
@@ -61,5 +71,34 @@ public interface NoteDao {
     List<Note> findByCategoryIdAndUserId(@Param(value = "categoryId") Integer categoryId,
                                          @Param(value = "userId") Integer userId);
 
+
+    /**
+     * @param noteCategoryId
+     * @return
+     */
     Integer removeByNoteCategoryId(Integer noteCategoryId);
+
+
+    List<Note> findByTime(@Param(value = "startTime") Date startTime,
+                          @Param(value = "endTime") Date endTime);
+
+    /**
+     * select * from  note_info where note_title like CONCAT('%',#{keyWord},'%')
+     * select * from  note_info where note_title like '%${keyWord}%'
+     *
+     * @param keyWord
+     * @return
+     */
+    List<Note> findByKeyWord(@Param(value = "keyWord") String keyWord,
+                             @Param(value = "userId") Integer userId);
+
+    /**
+     * 获取所有笔记
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    List<Note> findAllNoteByPage(@Param(value = "page") Integer page,
+                          @Param(value = "size") Integer size);
 }

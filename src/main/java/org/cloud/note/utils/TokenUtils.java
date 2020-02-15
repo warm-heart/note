@@ -69,4 +69,23 @@ public class TokenUtils {
         }
         return false;
     }
+
+
+    public boolean adminVerify(String token) {
+        if (StringUtils.isEmpty(token))
+            return false;
+        String userId = stringRedisTemplate.opsForValue().get(token);
+        if (!StringUtils.isEmpty(userId)) {
+            User user = userService.findByUserId(Integer.valueOf(userId));
+            if (user.getUserStatus() == 1) {
+                throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
+            }
+            if (user.getRoleId() == 1) {
+                throw new UserException("权限不足");
+            }
+            stringRedisTemplate.expire(token, 7, TimeUnit.DAYS);
+            return true;
+        }
+        return false;
+    }
 }

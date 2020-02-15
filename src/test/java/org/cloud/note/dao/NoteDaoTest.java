@@ -1,11 +1,17 @@
 package org.cloud.note.dao;
 
 import org.cloud.note.NoteApplicationTests;
+
 import org.cloud.note.entity.Note;
+import org.cloud.note.utils.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
 
 class NoteDaoTest extends NoteApplicationTests {
     @Autowired
@@ -17,6 +23,7 @@ class NoteDaoTest extends NoteApplicationTests {
 
     @Test
     void findByNoteId() {
+        System.out.println(noteDao.findByNoteId(12));
     }
 
     @Test
@@ -40,7 +47,7 @@ class NoteDaoTest extends NoteApplicationTests {
 
     @Test
     void getTotal() {
-        System.out.println(noteDao.getTotal(1));
+        System.out.println(noteDao.getTotal());
     }
 
     @Test
@@ -55,4 +62,26 @@ class NoteDaoTest extends NoteApplicationTests {
         System.out.println(note.getNoteId());
 
     }
+
+    @Test
+    void findByTime() {
+
+        Date startTime = DateUtils.yesterDay(new Date());
+        Date endTime = new Date();
+        System.out.println(endTime);
+        System.out.println(LocalDateTime.now());
+        List<Note> noteList = noteDao.findByTime(startTime, endTime);
+        System.out.println(noteList.size());
+        System.out.println(noteList);
+    }
+
+    @Test
+    void findByKeyWord() {
+
+        List<Note> noteList = noteDao.findByKeyWord("三", 1);
+        System.out.println(noteList.size());
+        System.out.println(noteList);
+
+    }
+
 }

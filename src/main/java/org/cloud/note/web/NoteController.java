@@ -8,6 +8,7 @@ import org.cloud.note.dto.NoteDetailDTO;
 import org.cloud.note.entity.Note;
 import org.cloud.note.enums.ResultEnum;
 
+import org.cloud.note.exception.NoteException;
 import org.cloud.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -47,7 +48,7 @@ public class NoteController {
                                        HttpServletRequest request) {
 
         String token = request.getHeader("token");
-        ServiceResult<NoteDTO> serviceResult = noteService.getNoteByPage(page, size, token);
+        ServiceResult<NoteDTO> serviceResult = noteService.getAllNoteByPageAndUserId(page, size, token);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -141,6 +142,20 @@ public class NoteController {
             return ApiResponse.success(serviceResult.getResult());
         }
         return ApiResponse.error(serviceResult.getMessage());
+    }
+
+    @PostMapping(value = "/search")
+    public ApiResponse<List<Note>> search(String noteName,HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(noteName)) {
+            throw new NoteException("请输入关键词");
+        }
+        ServiceResult<List<Note>> result = noteService.search(noteName,token);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+
     }
 
 

@@ -52,18 +52,18 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     @Transactional
-    public ServiceResult<NoteDTO> getNoteByPage(Integer page, Integer size, String token) {
+    public ServiceResult<NoteDTO> getAllNoteByPageAndUserId(Integer page, Integer size, String token) {
         Integer userId = Integer.valueOf(stringRedisTemplates.opsForValue().get(token));
         // 默认从0开始
         if (page != null && size != null) {
             page = (page - 1) * size;
         }
-        Integer total = noteDao.getTotal(userId);
+        Integer total = noteDao.getTotalByUserId(userId);
         if (total == 0) {
             //throw new NoteException(ResultEnum.YOUR_NOTE_IS_EMPTY);
             return ServiceResult.error(ResultEnum.YOUR_NOTE_IS_EMPTY.getMessage());
         }
-        List<Note> noteList = noteDao.findAllNoteByPage(page, size, userId);
+        List<Note> noteList = noteDao.findAllNoteByPageAndUserId(page, size, userId);
         for (Note note : noteList) {
             String str = note.getNoteContext();
             str = str.replaceAll("<.+?>", "");
@@ -245,6 +245,17 @@ public class NoteServiceImpl implements NoteService {
             return ServiceResult.success("取消分享成功");
         }
         throw new NoteException("取消分享失败");
+    }
+
+    @Override
+    public ServiceResult<List<Note>> search(String noteName, String token) {
+        Integer userId = Integer.valueOf(stringRedisTemplates.opsForValue().get(token));
+        List<Note> noteList = noteDao.findByKeyWord(noteName, userId);
+        if (CollectionUtils.isEmpty(noteList)) {
+
+            return ServiceResult.error(ResultEnum.NOTE_NOT_FOUND.getMessage());
+        }
+        return ServiceResult.success(noteList);
     }
 
 

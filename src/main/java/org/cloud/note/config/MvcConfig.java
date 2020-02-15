@@ -1,5 +1,6 @@
 package org.cloud.note.config;
 
+import org.cloud.note.Interceptor.AdminInterceptor;
 import org.cloud.note.Interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -24,6 +25,9 @@ public class MvcConfig implements WebMvcConfigurer {
     private CorsFilter corsFilter;
     @Autowired
     private LoginInterceptor loginInterceptor;
+
+    @Autowired
+    private AdminInterceptor adminInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -62,6 +66,8 @@ public class MvcConfig implements WebMvcConfigurer {
         url.add("/noteShare/getNoteShare");
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**").excludePathPatterns(url);
+
+        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**");
 
     }
 

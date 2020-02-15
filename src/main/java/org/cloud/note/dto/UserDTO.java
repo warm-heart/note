@@ -2,7 +2,7 @@ package org.cloud.note.dto;
 
 import lombok.Data;
 import org.cloud.note.entity.Note;
-
+import org.cloud.note.entity.User;
 
 import java.util.List;
 
@@ -11,17 +11,17 @@ import java.util.List;
  * @create 2020-01-03 12:54
  */
 @Data
-public class NoteDTO {
+public class UserDTO {
 
-    private List<Note> notes;
+    private List<User> users;
     private Integer Total;
 
-    public NoteDTO() {
+    public UserDTO() {
 
     }
 
-    public NoteDTO(List<Note> noteList, Integer total) {
-        this.notes = noteList;
+    public UserDTO(List<User> users, Integer total) {
+        this.users = users;
         Total = total;
     }
 }

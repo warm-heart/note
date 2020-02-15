@@ -1,8 +1,12 @@
 package org.cloud.note.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.cloud.note.entity.Note;
 import org.cloud.note.entity.User;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author wangqianlong
@@ -55,4 +59,20 @@ public interface UserDao {
      * @return
      */
     Integer deBlock(Integer userId);
+
+    /**
+     * 获取所有用户
+     *
+     * @return
+     */
+    List<User> getAllUser(@Param(value = "page") Integer page,
+                          @Param(value = "size") Integer size);
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    Integer getTotal();
+
 }
