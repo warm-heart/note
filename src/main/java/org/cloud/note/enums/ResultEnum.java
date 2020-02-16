@@ -18,6 +18,13 @@ public enum ResultEnum {
 
     USER_ACCOUNT_LOCK(26, "您的账户已被封禁，请联系管理员"),
 
+    USER_ACCOUNT_LOCK_SUCCESS(26, "账户锁定成功"),
+
+    USER_ACCOUNT_LOCK_FAIL(26, "账户锁定失败"),
+
+    USER_ACCOUNT_DE_BLOCK_SUCCESS(26, "账户解封成功"),
+    USER_ACCOUNT_DE_BLOCK_FAIL(26, "账户解封失败"),
+
     USER_CREATE_FAIL(26, "注册失败，请重试"),
 
     USER_NAME_IS_ALREADY_USED(26, "用户名已被使用"),

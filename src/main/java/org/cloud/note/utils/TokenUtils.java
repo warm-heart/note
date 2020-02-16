@@ -80,7 +80,10 @@ public class TokenUtils {
             if (user.getUserStatus() == 1) {
                 throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
             }
-            if (user.getRoleId() == 1) {
+            if (user.getRoleId() >= 3) {
+                throw new UserException("非法权限");
+            }
+            if (user.getRoleId() != 2) {
                 throw new UserException("权限不足");
             }
             stringRedisTemplate.expire(token, 7, TimeUnit.DAYS);

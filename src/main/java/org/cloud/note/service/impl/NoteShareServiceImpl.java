@@ -45,20 +45,14 @@ public class NoteShareServiceImpl implements NoteShareService {
         throw new NoteException("取消分享失败");
     }
 
-    @Override
-    @Transactional
-    public boolean incrementLoveCount(Integer noteId) {
-        Integer res = noteShareDao.incrementLoveCount(noteId);
-        if (res == 1) {
-            return true;
-        }
-        throw new NoteException("点赞失败");
-    }
 
     @Override
     @Transactional
     public ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size) {
-
+        Integer total = noteShareDao.getTotal();
+        if (total==0){
+            throw new NoteException("暂时没有分享的笔记");
+        }
         if (page != null && size != null) {
             page = (page - 1) * size;
         }
@@ -69,7 +63,7 @@ public class NoteShareServiceImpl implements NoteShareService {
             str = str.replaceAll("<a>\\s*|\t|\r|\n|&nbsp;|</a>", "");
             noteShareVO.setNoteContext(str);
         }
-        Integer total = noteShareDao.getTotal();
+
         NoteShareDTO noteShareDTO = new NoteShareDTO();
         noteShareDTO.setNoteShareVOS(noteShareVOList);
         noteShareDTO.setTotal(total);

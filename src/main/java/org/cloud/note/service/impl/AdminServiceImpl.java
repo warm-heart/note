@@ -10,9 +10,11 @@ import org.cloud.note.dto.UserDTO;
 import org.cloud.note.entity.Note;
 import org.cloud.note.entity.User;
 import org.cloud.note.enums.ResultEnum;
+import org.cloud.note.exception.UserException;
 import org.cloud.note.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -63,5 +65,26 @@ public class AdminServiceImpl implements AdminService {
 
         NoteDTO noteDTO = new NoteDTO(notes, total);
         return ServiceResult.success(noteDTO);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> deBlockUser(Integer userId) {
+
+        Integer res = userDao.deBlock(userId);
+        if (1 == res) {
+            return ServiceResult.success(ResultEnum.USER_ACCOUNT_DE_BLOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_ACCOUNT_DE_BLOCK_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> lockUser(Integer userId) {
+        Integer res = userDao.lockUser(userId);
+        if (1 == res) {
+            return ServiceResult.success(ResultEnum.USER_ACCOUNT_LOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_ACCOUNT_LOCK_FAIL);
     }
 }

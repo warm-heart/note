@@ -16,4 +16,9 @@ public interface AdminService {
     ServiceResult<UserDTO> getAllUser(Integer page, Integer size);
 
     ServiceResult<NoteDTO> getAllNoteByPage(Integer page, Integer size);
+
+    ServiceResult<String> deBlockUser(Integer userId);
+
+
+    ServiceResult<String> lockUser(Integer userId);
 }

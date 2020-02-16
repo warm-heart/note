@@ -19,7 +19,7 @@ public interface NoteShareService {
 
     boolean removeShareByNoteId(Integer noteId);
 
-    boolean incrementLoveCount(Integer noteId);
+
 
     ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size);
 
