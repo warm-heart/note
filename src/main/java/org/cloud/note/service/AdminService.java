@@ -1,11 +1,12 @@
 package org.cloud.note.service;
 
 import org.cloud.note.dto.NoteDTO;
+import org.cloud.note.dto.NoteDetailDTO;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dto.UserDTO;
-import org.cloud.note.entity.User;
 
-import java.util.List;
+
+
 
 /**
  * @author wangqianlong
@@ -16,6 +17,15 @@ public interface AdminService {
     ServiceResult<UserDTO> getAllUser(Integer page, Integer size);
 
     ServiceResult<NoteDTO> getAllNoteByPage(Integer page, Integer size);
+
+    ServiceResult<NoteDetailDTO> getNoteByNoteId(Integer noteId);
+
+
+    ServiceResult<String> deBlockNote(Integer noteId);
+
+
+    ServiceResult<String> lockNote(Integer noteId);
+
 
     ServiceResult<String> deBlockUser(Integer userId);
 

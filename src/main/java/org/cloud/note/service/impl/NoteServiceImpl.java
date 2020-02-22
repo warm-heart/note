@@ -3,14 +3,12 @@ package org.cloud.note.service.impl;
 import lombok.extern.slf4j.Slf4j;
 
 import org.cloud.note.VO.NoteVO;
+import org.cloud.note.dao.UserDao;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.NoteDao;
 import org.cloud.note.dto.NoteDTO;
 import org.cloud.note.dto.NoteDetailDTO;
-import org.cloud.note.entity.Note;
-import org.cloud.note.entity.NoteCategory;
-import org.cloud.note.entity.NoteShare;
-import org.cloud.note.entity.NoteTag;
+import org.cloud.note.entity.*;
 import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.exception.NoteException;
 import org.cloud.note.service.NoteCategoryService;
@@ -46,6 +44,8 @@ public class NoteServiceImpl implements NoteService {
     NoteTagService noteTagService;
     @Autowired
     NoteShareService noteShareService;
+    @Autowired
+    UserDao userDao;
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -122,7 +122,11 @@ public class NoteServiceImpl implements NoteService {
             List<NoteTag> noteTagList = noteTagService.getByNoteId(noteId);
             // 3 根据noteId查出笔记所属分类
             NoteCategory noteCategory = noteCategoryService.getNoteCategoryById(note.getCategoryId()).getResult();
-            //4 组装DTO返回前端
+            // 4查出用户
+            User user = userDao.findByUserId(note.getUserId());
+
+            // 5组装DTO返回前端
+            noteDetailDTO1.setUserName(user.getUserName());
             noteDetailDTO1.setNote(note);
             noteDetailDTO1.setNoteCategory(noteCategory);
             List<String> labels = noteTagList.stream().map(e -> e.getNoteLabel()).collect(Collectors.toList());

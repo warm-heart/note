@@ -29,9 +29,12 @@ public class NoteShareController {
 
     @PostMapping("/getNoteShare")
     public ApiResponse<NoteShareDTO> noteShare(Integer page, Integer size) {
-        return ApiResponse.success(noteShareService.findNoteShareByPage(page, size).getResult());
+        ServiceResult<NoteShareDTO> result = noteShareService.findNoteShareByPage(page, size);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
     }
-
 
 
     @PostMapping(value = "/love")

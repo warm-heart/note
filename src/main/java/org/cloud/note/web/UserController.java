@@ -1,6 +1,7 @@
 package org.cloud.note.web;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cloud.note.VO.UserVO;
 import org.cloud.note.dto.ApiResponse;
 
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 
@@ -106,14 +108,7 @@ public class UserController {
         return ApiResponse.success(user);
     }
 
-    @PostMapping("/createUser")
-    public ApiResponse<String> createUser(@RequestBody User user) {
-        ServiceResult result = userService.createUser(user);
-        if (result.isSuccess()) {
-            return ApiResponse.success((String) result.getResult());
-        }
-        return ApiResponse.error(result.getMessage());
-    }
+
 
 
     @PostMapping("/updateUser")

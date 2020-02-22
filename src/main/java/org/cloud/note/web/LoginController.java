@@ -1,6 +1,7 @@
 package org.cloud.note.web;
 
 
+import org.cloud.note.VO.UserVO;
 import org.cloud.note.dto.ApiResponse;
 import org.cloud.note.dto.ServiceResult;
 
@@ -43,21 +44,16 @@ public class LoginController {
             res.add((String) serviceResult.getResult());
             res.add(user.getUserIcon());
             res.add(user.getUserName());
+            if (user.getRoleId() == 2) {
+                res.add("admin");
+            }
+            res.add("user");
             return ApiResponse.success(res);
         }
         return ApiResponse.error(serviceResult.getMessage());
 
     }
 
-
-    @PostMapping("/register")
-    public ApiResponse register(@RequestBody @Valid User user) {
-        ServiceResult result = userService.createUser(user);
-        if (result.isSuccess()) {
-            return ApiResponse.success(result.getResult());
-        }
-        return ApiResponse.error(result.getMessage());
-    }
 
     @PostMapping("/logout")
     public ApiResponse<String> logout(String token) {
@@ -72,6 +68,25 @@ public class LoginController {
         }
         return ApiResponse.error(serviceResult.getMessage());
 
+    }
+
+    @PostMapping("/register")
+    public ApiResponse<String> createUser(@RequestBody @Valid UserVO userVO) {
+
+        User user = new User();
+        user.setUserName(userVO.getUserName());
+        user.setNickName(userVO.getNickName());
+        user.setUserPhone(userVO.getUserPhone());
+        user.setUserAddress(userVO.getUserAddress());
+        user.setUserEmail(userVO.getUserEmail());
+        user.setUserSex(userVO.getUserSex());
+        user.setBirthday(userVO.getBirthday());
+        user.setUserPassword(userVO.getUserPassword());
+        ServiceResult result = userService.createUser(user);
+        if (result.isSuccess()) {
+            return ApiResponse.success((String) result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
     }
 
 

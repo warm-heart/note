@@ -55,14 +55,14 @@ public class UserDaoTest extends NoteApplicationTests {
 
     @Test
     void lockUser() {
-        Integer res = userDao.lockUser(1);
+        Integer res = userDao.lockUser(2);
         System.out.println(res);
     }
 
 
     @Test
     void deBlock() {
-        Integer res = userDao.deBlock(1);
+        Integer res = userDao.deBlock(2);
         System.out.println(res);
     }
 }

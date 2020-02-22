@@ -50,8 +50,8 @@ public class NoteShareServiceImpl implements NoteShareService {
     @Transactional
     public ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size) {
         Integer total = noteShareDao.getTotal();
-        if (total==0){
-            throw new NoteException("暂时没有分享的笔记");
+        if (total == 0) {
+            return ServiceResult.error("暂时没有分享的笔记");
         }
         if (page != null && size != null) {
             page = (page - 1) * size;

@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         //检查名称是否被注册过
         User user1 = userDao.findByUserName(user.getUserName());
         if (user1 != null) {
-            throw new UserException(ResultEnum.USER_NAME_IS_ALREADY_USED);
+            return ServiceResult.error(ResultEnum.USER_NAME_IS_ALREADY_USED.getMessage());
         }
         // 1 保存用户
         user.setUserPassword(MD5Utils.encode(user.getUserPassword()));

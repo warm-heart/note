@@ -48,14 +48,10 @@
     </select>
 
 
-    <delete id="removeByNoteCategoryId">
-        delete from note_info where category_id=#{noteCategoryId}
-    </delete>
-
-
     <select id="findByTime" resultType="org.cloud.note.entity.Note">
         select * from note_info where <![CDATA[ update_time >= #{startTime}]]>
-        and <![CDATA[ update_time <= #{endTime}]]>
+        and <![CDATA[ update_time <= #{endTime}
+        ]]>
 
     </select>
 
@@ -70,4 +66,13 @@
     <select id="findAllNoteByPage" resultType="org.cloud.note.entity.Note">
         select  * from  note_info  limit #{page},#{size}
     </select>
+
+
+    <update id="lockNote">
+         update note_info set note_status=1 where note_id=#{noteId}
+    </update>
+
+    <update id="deBlockNote">
+        update note_info set note_status=0 where note_id=#{noteId}
+    </update>
 </mapper>

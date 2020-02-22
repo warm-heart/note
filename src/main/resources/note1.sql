@@ -13,6 +13,7 @@ create  table user (
 `user_email` varchar (64)   comment '用户邮箱',
 `user_sex`tinyint(3) NOT NULL default  '0' comment '用户性别,默认0 男，1女',
 `user_phone` varchar(64)    comment '用户电话',
+`birthday` date default NULL comment '生日',
 `user_status`tinyint(3) NOT NULL default  '0' comment '用户状态,默认0 正常，1封禁',
 `role_id` bigint not null  default '1' comment '权限 默认为用户',
 `create_time` timestamp NOT NULL default current_timestamp comment '注册时间',

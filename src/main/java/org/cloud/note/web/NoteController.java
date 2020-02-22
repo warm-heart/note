@@ -60,8 +60,8 @@ public class NoteController {
     @PostMapping(value = "/noteDetail")
     public ApiResponse<NoteDetailDTO> noteDetail(Integer noteId,
                                                  HttpServletRequest request) {
-        if (StringUtils.isEmpty(String.valueOf(noteId))) {
-            return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
+        if (StringUtils.isEmpty(String.valueOf(noteId)) || noteId == null) {
+            return ApiResponse.error(ResultEnum.PARAM_ERROR);
         }
         ServiceResult<NoteDetailDTO> serviceResult = noteService.getNoteByNoteId(noteId);
 
@@ -145,12 +145,12 @@ public class NoteController {
     }
 
     @PostMapping(value = "/search")
-    public ApiResponse<List<Note>> search(String noteName,HttpServletRequest request) {
+    public ApiResponse<List<Note>> search(String noteName, HttpServletRequest request) {
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(noteName)) {
-            throw new NoteException("请输入关键词");
+            return ApiResponse.error("请输入关键词");
         }
-        ServiceResult<List<Note>> result = noteService.search(noteName,token);
+        ServiceResult<List<Note>> result = noteService.search(noteName, token);
         if (result.isSuccess()) {
             return ApiResponse.success(result.getResult());
         }

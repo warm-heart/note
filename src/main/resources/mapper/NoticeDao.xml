@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cloud.note.dao.NoticeDao">
+
+
+    <insert id="createNotice" parameterType="org.cloud.note.entity.Notice"
+    >
+      INSERT  INTO notice(notice_title, notice_context) values (#{noticeTitle},#{noticeContext})
+    </insert>
+
+    <update id="updateNotice" parameterType="org.cloud.note.entity.Notice">
+        update notice set notice_title=#{noticeTitle},notice_context=#{noticeContext}
+        where notice_id=#{noticeId}
+
+    </update>
+
+
+    <delete id="removeNoticeById">
+          delete  from notice where notice_id=#{noticeId}
+    </delete>
+
+
+    <select id="findAllNoticeByPage" resultType="org.cloud.note.entity.Notice">
+        select  * from  notice  order by update_time desc limit #{page},#{size}
+    </select>
+
+    <select id="total" resultType="java.lang.Integer">
+        select count(*) from notice
+    </select>
+
+    <select id="findNoticeById" resultType="org.cloud.note.entity.Notice">
+
+        select * from  notice where notice_id=#{noticeId}
+    </select>
+</mapper>

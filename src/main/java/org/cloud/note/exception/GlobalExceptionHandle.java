@@ -57,7 +57,7 @@ public class GlobalExceptionHandle {
     @ResponseBody
     public ApiResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
         FieldError fieldError = e.getBindingResult().getFieldError();
-        log.error("参数校验错误 , uri: {} ,  ", request.getRequestURI());
+        log.warn("参数校验错误 , uri: {}  caused by {},  ", request.getRequestURI(),fieldError);
         return ApiResponse.error(fieldError.getDefaultMessage());
     }
 

@@ -23,10 +23,10 @@
 
     <insert id="createUser" parameterType="org.cloud.note.entity.User"
             useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
-        insert  into
-        user(user_name, nick_name, user_password, user_icon, user_address, user_email, user_phone,user_sex)
-        values (#{userName},#{nickName},#{userPassword},#{userIcon},#{userAddress},#{userEmail},
-        #{userPhone}),#{userSex},
+        insert  into user(user_name, nick_name, user_password, user_icon,user_address, user_email,
+        user_phone,user_sex,birthday)
+        values (#{userName},#{nickName},#{userPassword},#{userIcon}, #{userAddress},#{userEmail},
+        #{userPhone},#{userSex},#{birthday})
     </insert>
 
 

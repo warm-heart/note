@@ -3,15 +3,13 @@ package org.cloud.note.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.cloud.note.dao.NoteDao;
 import org.cloud.note.dao.UserDao;
-import org.cloud.note.dto.ApiResponse;
-import org.cloud.note.dto.NoteDTO;
-import org.cloud.note.dto.ServiceResult;
-import org.cloud.note.dto.UserDTO;
+import org.cloud.note.dto.*;
 import org.cloud.note.entity.Note;
 import org.cloud.note.entity.User;
 import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.exception.UserException;
 import org.cloud.note.service.AdminService;
+import org.cloud.note.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +30,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     NoteDao noteDao;
+    @Autowired
+    NoteService noteService;
 
     @Override
     public ServiceResult<UserDTO> getAllUser(Integer page, Integer size) {
@@ -68,10 +68,36 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public ServiceResult<NoteDetailDTO> getNoteByNoteId(Integer noteId) {
+        return noteService.getNoteByNoteId(noteId);
+    }
+
+    @Override
+    public ServiceResult<String> deBlockNote(Integer noteId) {
+
+        Integer res = noteDao.deBlockNote(noteId);
+        if (1 == res) {
+            return ServiceResult.success(ResultEnum.NOTE_DE_BLOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.NOTE_DE_BLOCK_FAIL);
+    }
+
+    @Override
+    public ServiceResult<String> lockNote(Integer noteId) {
+
+        Integer res = noteDao.lockNote(noteId);
+        if (1 == res) {
+            return ServiceResult.success(ResultEnum.NOTE_LOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.NOTE_LOCK_FAIL);
+    }
+
+    @Override
     @Transactional
     public ServiceResult<String> deBlockUser(Integer userId) {
 
         Integer res = userDao.deBlock(userId);
+
         if (1 == res) {
             return ServiceResult.success(ResultEnum.USER_ACCOUNT_DE_BLOCK_SUCCESS.getMessage());
         }

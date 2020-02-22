@@ -52,6 +52,14 @@ public enum ResultEnum {
 
     NOTE_NOT_FOUND(36, "未找到笔记"),
 
+    NOTE_LOCK_SUCCESS(36, "笔记锁定成功"),
+
+    NOTE_LOCK_FAIL(36, "笔记锁定失败"),
+
+    NOTE_DE_BLOCK_SUCCESS(36, "笔记解封成功"),
+
+    NOTE_DE_BLOCK_FAIL(36, "笔记解封失败"),
+
 
     NOTE_CATEGORY_IS_EMPTY(46, "笔记分类为空，请创建笔记分类"),
 

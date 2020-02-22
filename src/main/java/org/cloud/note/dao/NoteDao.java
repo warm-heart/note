@@ -47,8 +47,8 @@ public interface NoteDao {
      * @return
      */
     List<Note> findAllNoteByPageAndUserId(@Param(value = "page") Integer page,
-                                 @Param(value = "size") Integer size,
-                                 @Param(value = "userId") Integer userId);
+                                          @Param(value = "size") Integer size,
+                                          @Param(value = "userId") Integer userId);
 
 
     /**
@@ -72,13 +72,6 @@ public interface NoteDao {
                                          @Param(value = "userId") Integer userId);
 
 
-    /**
-     * @param noteCategoryId
-     * @return
-     */
-    Integer removeByNoteCategoryId(Integer noteCategoryId);
-
-
     List<Note> findByTime(@Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
 
@@ -100,5 +93,9 @@ public interface NoteDao {
      * @return
      */
     List<Note> findAllNoteByPage(@Param(value = "page") Integer page,
-                          @Param(value = "size") Integer size);
+                                 @Param(value = "size") Integer size);
+
+    Integer lockNote(Integer noteId);
+
+    Integer deBlockNote(Integer noteId);
 }

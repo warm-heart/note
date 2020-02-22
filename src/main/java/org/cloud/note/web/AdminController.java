@@ -1,20 +1,20 @@
 package org.cloud.note.web;
 
-import org.cloud.note.dto.ApiResponse;
-import org.cloud.note.dto.NoteDTO;
-import org.cloud.note.dto.ServiceResult;
-import org.cloud.note.dto.UserDTO;
+import org.cloud.note.dto.*;
 
+import org.cloud.note.entity.Notice;
 import org.cloud.note.enums.ResultEnum;
 
 import org.cloud.note.exception.UserException;
 import org.cloud.note.service.AdminService;
 
+import org.cloud.note.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 
 /**
@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private NoticeService noticeService;
 
     @PostMapping("/getAllUser")
     public ApiResponse<UserDTO> getAllUser(@RequestParam(defaultValue = "1") Integer page,
@@ -48,9 +51,47 @@ public class AdminController {
         }
         return ApiResponse.error(result.getMessage());
     }
+    @PostMapping(value = "/noteDetail")
+    public ApiResponse<NoteDetailDTO> noteDetail(Integer noteId,
+                                                 HttpServletRequest request) {
+        if (StringUtils.isEmpty(String.valueOf(noteId))||noteId==null) {
+            return ApiResponse.error(ResultEnum.PARAM_ERROR);
+        }
+        ServiceResult<NoteDetailDTO> serviceResult = adminService.getNoteByNoteId(noteId);
+
+        if (serviceResult.isSuccess()) {
+            return ApiResponse.success(serviceResult.getResult());
+        }
+        return ApiResponse.error(serviceResult.getMessage());
+    }
+
+    @PostMapping("/deBlockNote")
+    public ApiResponse<String> deBlockNote(@RequestParam Integer noteId) {
+        if (noteId == null) {
+            throw new UserException(ResultEnum.PARAM_ERROR);
+        }
+        ServiceResult<String> result = adminService.deBlockNote(noteId);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping("/lockNote")
+    public ApiResponse<String> lockNote(@RequestParam Integer noteId) {
+        if (noteId == null) {
+            throw new UserException(ResultEnum.PARAM_ERROR);
+        }
+        ServiceResult<String> result = adminService.lockNote(noteId);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
 
     @PostMapping("/deBlockUser")
-    public ApiResponse<String> deBlock(@RequestParam Integer userId) {
+    public ApiResponse<String> deBlockUser(@RequestParam Integer userId) {
         if (userId == null) {
             throw new UserException(ResultEnum.PARAM_ERROR);
         }
@@ -72,6 +113,69 @@ public class AdminController {
             return ApiResponse.success(result.getResult());
         }
         return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping("/createNotice")
+    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice) {
+
+        ServiceResult<String> result = noticeService.createNotice(notice);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping("/updateNotice")
+    public ApiResponse<String> updateNotice(@RequestBody @Valid Notice notice) {
+
+        ServiceResult<String> result = noticeService.updateNotice(notice);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+    @PostMapping("/removeNotice")
+    public ApiResponse<String> removeNotice(@RequestParam Integer noticeId) {
+        if (noticeId == null) {
+            throw new UserException(ResultEnum.PARAM_ERROR);
+        }
+
+        ServiceResult<String> result = noticeService.removeNoticeById(noticeId);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping(value = "/getAllNotice")
+    public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page,
+                                               @RequestParam(defaultValue = "5") Integer size,
+                                               HttpServletRequest request) {
+
+        ServiceResult<NoticeDTO> serviceResult = noticeService.findAllNoticeByPage(page, size);
+
+        if (serviceResult.isSuccess()) {
+            return ApiResponse.success(serviceResult.getResult());
+        }
+        return ApiResponse.error(serviceResult.getMessage());
+    }
+
+    @PostMapping(value = "/noticeDetail")
+    public ApiResponse<Notice> noticeDetail(Integer noticeId,
+                                            HttpServletRequest request) {
+        if (StringUtils.isEmpty(String.valueOf(noticeId))) {
+            return ApiResponse.error(ResultEnum.PARAM_ERROR);
+        }
+        ServiceResult<Notice> serviceResult = noticeService.findNoticeById(noticeId);
+
+        if (serviceResult.isSuccess()) {
+            return ApiResponse.success(serviceResult.getResult());
+        }
+        return ApiResponse.error(serviceResult.getMessage());
     }
 
 
