@@ -145,11 +145,32 @@ public class UserServiceImpl implements UserService {
         user1.setUserName(user.getUserName());
         user1.setUserSex(user.getUserSex());
 
+
         Integer res = userDao.updateUser(user1);
         if (res == 1) {
             return ServiceResult.success(ResultEnum.USER_UPDATE_SUCCESS.getMessage());
         }
         throw new UserException(ResultEnum.USER_UPDATE_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> findPassword(String password, String userName) {
+        log.warn("用户 {} 找回密码 修改密码", userName);
+        User user = this.findByUserName(userName);
+        user.setUserPassword(MD5Utils.encode(password));
+        Integer res = userDao.updateUser(user);
+        if (res == 1) {
+            return ServiceResult.success(ResultEnum.USER_PASSWORD_UPDATE_SUCCESS.getMessage());
+        }
+        return ServiceResult.error(ResultEnum.USER_PASSWORD_UPDATE_FAIL.getMessage());
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> updatePassword(String password, String newPassword, String token) {
+        //todo
+        return null;
     }
 
 }

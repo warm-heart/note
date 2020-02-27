@@ -6,8 +6,6 @@ import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dto.UserDTO;
 
 
-
-
 /**
  * @author wangqianlong
  * @create 2020-02-13 14:29
@@ -17,6 +15,10 @@ public interface AdminService {
     ServiceResult<UserDTO> getAllUser(Integer page, Integer size);
 
     ServiceResult<NoteDTO> getAllNoteByPage(Integer page, Integer size);
+
+    ServiceResult<UserDTO> getAllLockUser(Integer page, Integer size);
+
+    ServiceResult<NoteDTO> getAllLockNoteByPage(Integer page, Integer size);
 
     ServiceResult<NoteDetailDTO> getNoteByNoteId(Integer noteId);
 

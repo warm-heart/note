@@ -14,7 +14,7 @@ public enum ResultEnum {
 
     LOGIN_FAIL(25, "登录失败, 登录信息不正确"),
 
-    USER_NOT_FOUND(26, "登录失败, 未找到用户，前往请注册"),
+    USER_NOT_FOUND(26, " 未找到用户，前往请注册"),
 
     USER_ACCOUNT_LOCK(26, "您的账户已被封禁，请联系管理员"),
 
@@ -34,6 +34,10 @@ public enum ResultEnum {
     USER_UPDATE_FAIL(26, "修改个人信息失败，请重试"),
 
     USER_UPDATE_SUCCESS(26, "修改个人信息成功"),
+
+    USER_PASSWORD_UPDATE_SUCCESS(26, "密码修改成功"),
+
+    USER_PASSWORD_UPDATE_FAIL(26, "密码修改失败"),
 
 
     YOUR_NOTE_IS_EMPTY(36, "您还没有创建笔记，赶快去创建吧"),

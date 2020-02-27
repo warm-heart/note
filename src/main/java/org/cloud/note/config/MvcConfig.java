@@ -64,6 +64,8 @@ public class MvcConfig implements WebMvcConfigurer {
         url.add("/logout");
         url.add("/Image/**");
         url.add("/noteShare/getNoteShare");
+        url.add("/getVerifyMessage");
+        url.add("/findPassword");
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**").excludePathPatterns(url);
 

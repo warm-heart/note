@@ -151,7 +151,12 @@ public class NoteServiceImpl implements NoteService {
         noteTagService.removeByNoteId(noteId);
         if (note.getShareStatus() == 1)
             // 3删除分享表
-            noteShareService.removeShareByNoteId(noteId);
+            try {
+                noteShareService.removeShareByNoteId(noteId);
+            } catch (Exception e) {
+                throw new NoteException(ResultEnum.REMOVE_NOTE_FAIL);
+            }
+
         // 4 删除redis
         redisTemplate.delete(noteId.toString());
         if (res == 1) {
@@ -226,8 +231,8 @@ public class NoteServiceImpl implements NoteService {
         noteShare.setNoteId(noteId);
         noteShare.setUserId(note.getUserId());
         boolean flag = noteShareService.saveShare(noteShare);
-        redisTemplate.delete(noteId.toString());
         if (res == 1 && flag) {
+            redisTemplate.delete(noteId.toString());
             return ServiceResult.success("分享成功");
         }
         throw new NoteException("分享失败");
@@ -246,6 +251,7 @@ public class NoteServiceImpl implements NoteService {
         //2 删除分享表
         noteShareService.removeShareByNoteId(noteId);
         if (res == 1) {
+            redisTemplate.delete(noteId.toString());
             return ServiceResult.success("取消分享成功");
         }
         throw new NoteException("取消分享失败");
@@ -256,8 +262,13 @@ public class NoteServiceImpl implements NoteService {
         Integer userId = Integer.valueOf(stringRedisTemplates.opsForValue().get(token));
         List<Note> noteList = noteDao.findByKeyWord(noteName, userId);
         if (CollectionUtils.isEmpty(noteList)) {
-
             return ServiceResult.error(ResultEnum.NOTE_NOT_FOUND.getMessage());
+        }
+        for (Note note : noteList) {
+            String str = note.getNoteContext();
+            str = str.replaceAll("<.+?>", "");
+            str = str.replaceAll("<a>\\s*|\t|\r|\n|&nbsp;|</a>", "");
+            note.setNoteContext(str);
         }
         return ServiceResult.success(noteList);
     }

@@ -109,8 +109,6 @@ public class UserController {
     }
 
 
-
-
     @PostMapping("/updateUser")
     public ApiResponse<String> updateUser(@RequestBody User user) {
         ServiceResult result = userService.updateUser(user);
@@ -118,6 +116,13 @@ public class UserController {
             return ApiResponse.success((String) result.getResult());
         }
         return ApiResponse.error(result.getMessage());
+    }
+
+
+    @PostMapping("/resetPassword")
+    public ApiResponse<String> userInfo(String password, String userName) {
+        //todo
+        return null;
     }
 
 }

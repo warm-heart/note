@@ -32,7 +32,7 @@ import java.time.Duration;
  */
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+public class  RedisConfig extends CachingConfigurerSupport {
 
 
     @Value("${redis.maxIdle}")

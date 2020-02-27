@@ -1,6 +1,7 @@
 package org.cloud.note.web;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.cloud.note.VO.UserVO;
 import org.cloud.note.dto.ApiResponse;
 import org.cloud.note.dto.ServiceResult;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.List;
  * @create 2019-12-25 10:45
  */
 @RestController
+@Slf4j
 public class LoginController {
     @Autowired
     LoginService loginService;
@@ -85,6 +88,29 @@ public class LoginController {
         ServiceResult result = userService.createUser(user);
         if (result.isSuccess()) {
             return ApiResponse.success((String) result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+    @PostMapping("/getVerifyMessage")
+    public ApiResponse<List<String>> userInfo(String userName) {
+        log.warn("用户{} 找回密码获取验证信息", userName);
+
+        if (StringUtils.isEmpty(userName)) {
+            return ApiResponse.error("请输入用户名");
+        }
+        User user = userService.findByUserName(userName);
+        List<String> list = new ArrayList<>();
+        list.add(user.getUserEmail());
+        list.add(user.getUserPhone());
+        return ApiResponse.success(list);
+    }
+
+    @PostMapping("/findPassword")
+    public ApiResponse<String> userInfo(String password, String userName) {
+        ServiceResult<String> result = userService.findPassword(password, userName);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
         }
         return ApiResponse.error(result.getMessage());
     }

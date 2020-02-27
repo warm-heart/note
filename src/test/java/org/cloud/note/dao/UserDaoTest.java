@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,11 @@ public class UserDaoTest extends NoteApplicationTests {
     }
 
     @Test
+
     void findByUserId() {
-        System.out.println(userDao.findByUserId(2));
+        System.out.println(userDao.findByUserId(1));
+
+        System.out.println(userDao.findByUserId(1));
     }
 
 

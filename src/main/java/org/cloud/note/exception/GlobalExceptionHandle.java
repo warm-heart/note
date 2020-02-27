@@ -25,7 +25,7 @@ public class GlobalExceptionHandle {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse UnauthorizedException(Exception e, HttpServletRequest request) {
-        log.error("未认证 , uri: {} , caused by: {} ", request.getRequestURI(), e);
+        log.warn("token不合法 , uri: {} , caused by: {} ", request.getRequestURI(), e);
         return ApiResponse.error(e.getMessage());
     }
 

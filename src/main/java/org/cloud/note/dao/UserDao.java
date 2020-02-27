@@ -75,4 +75,15 @@ public interface UserDao {
      */
     Integer getTotal();
 
+
+    List<User> getAllLockUser(@Param(value = "page") Integer page,
+                          @Param(value = "size") Integer size);
+
+    /**
+     * 获取总数
+     *
+     * @return
+     */
+    Integer getLockTotal();
+
 }

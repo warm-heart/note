@@ -51,6 +51,28 @@ public class AdminController {
         }
         return ApiResponse.error(result.getMessage());
     }
+
+    @PostMapping("/getAllLockUser")
+    public ApiResponse<UserDTO> getAllLockUser(@RequestParam(defaultValue = "1") Integer page,
+                                           @RequestParam(defaultValue = "5") Integer size) {
+        ServiceResult<UserDTO> result = adminService.getAllLockUser(page, size);
+
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
+    @PostMapping("/getAllLockNote")
+    public ApiResponse<NoteDTO> getAllLockNote(@RequestParam(defaultValue = "1") Integer page,
+                                           @RequestParam(defaultValue = "5") Integer size) {
+        ServiceResult<NoteDTO> result = adminService.getAllLockNoteByPage(page, size);
+
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
     @PostMapping(value = "/noteDetail")
     public ApiResponse<NoteDetailDTO> noteDetail(Integer noteId,
                                                  HttpServletRequest request) {

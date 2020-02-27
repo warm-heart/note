@@ -98,4 +98,9 @@ public interface NoteDao {
     Integer lockNote(Integer noteId);
 
     Integer deBlockNote(Integer noteId);
+
+    List<Note> findAllLockNoteByPage(@Param(value = "page") Integer page,
+                                 @Param(value = "size") Integer size);
+
+    Integer getLockTotal();
 }

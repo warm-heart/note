@@ -49,4 +49,8 @@ public interface UserService {
      * @return
      */
     ServiceResult<String> updateUser(User user);
+
+    ServiceResult<String> findPassword(String password, String userName);
+
+    ServiceResult<String> updatePassword(String password, String newPassword, String token);
 }

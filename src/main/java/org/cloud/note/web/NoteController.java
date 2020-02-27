@@ -145,7 +145,8 @@ public class NoteController {
     }
 
     @PostMapping(value = "/search")
-    public ApiResponse<List<Note>> search(String noteName, HttpServletRequest request) {
+    public ApiResponse<List<Note>> search(String noteName,
+                                          HttpServletRequest request) {
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(noteName)) {
             return ApiResponse.error("请输入关键词");
