@@ -39,9 +39,9 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
 
     @Override
-    public ServiceResult<List<NoteCategory>> getNoteCategoryByUserId(String token) {
+    public ServiceResult<List<NoteCategory>> listNoteCategoryByUserId(String token) {
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
-        List<NoteCategory> noteCategoryList = noteCategoryDao.findByUserId(userId);
+        List<NoteCategory> noteCategoryList = noteCategoryDao.listNoteCategoryByUserId(userId);
         if (CollectionUtils.isEmpty(noteCategoryList))
             throw new NoteException(ResultEnum.NOTE_CATEGORY_IS_EMPTY);
        /* List<String> categoryNames = noteCategoryList.stream()
@@ -51,8 +51,8 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
 
     @Override
-    public ServiceResult<NoteCategory> getNoteCategoryByNameAndUserId(String categoryName, Integer userId) {
-        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryByNameAndUserId(categoryName, userId);
+    public ServiceResult<NoteCategory> getNoteCategoryBycategoryNameAndUserId(String categoryName, Integer userId) {
+        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryBycategoryNameAndUserId(categoryName, userId);
         if (noteCategory == null) {
             throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
         }
@@ -60,8 +60,8 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     }
 
     @Override
-    public ServiceResult<NoteCategory> getNoteCategoryById(Integer categoryId) {
-        NoteCategory noteCategory = noteCategoryDao.findByCategoryId(categoryId);
+    public ServiceResult<NoteCategory> getCategoryByCategoryId(Integer categoryId) {
+        NoteCategory noteCategory = noteCategoryDao.getCategoryByCategoryId(categoryId);
         if (noteCategory == null) {
             throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
         }
@@ -70,8 +70,8 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
     @Override
     @Transactional
-    public ServiceResult<String> createNoteCategory(String categoryName, String categoryDescription,
-                                                    Integer userId) {
+    public ServiceResult<String> saveNoteCategory(String categoryName, String categoryDescription,
+                                                  Integer userId) {
         NoteCategory noteCategory = new NoteCategory();
         noteCategory.setCategoryName(categoryName);
         noteCategory.setCategoryDescription(categoryDescription);
@@ -87,8 +87,8 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     @Transactional
     public ServiceResult<String> removeNoteCategory(String categoryName, Integer userId) {
         //1 如果笔记分类少于 1 则无法删除
-        Integer count = noteCategoryDao.getTotal(userId);
-        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryByNameAndUserId(categoryName, userId);
+        Integer count = noteCategoryDao.countCategoryByuserId(userId);
+        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryBycategoryNameAndUserId(categoryName, userId);
         if (count <= 1) {
             return ServiceResult.error(ResultEnum.NOTE_CATEGORY_NOT_LESS_ONE.getMessage());
         }
@@ -97,16 +97,16 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
         }
 
         //2 删除笔记分类下的笔记
-        List<Note> notes = noteDao.findByCategoryIdAndUserId(noteCategory.getCategoryId(), userId);
+        List<Note> notes = noteDao.listNoteByCategoryIdAndUserId(noteCategory.getCategoryId(), userId);
         try {
             for (Note note : notes) {
-                noteService.removeByNoteId(note.getNoteId());
+                noteService.removeNoteByNoteId(note.getNoteId());
             }
         } catch (Exception e) {
             throw new NoteException(ResultEnum.NOTE_CATEGORY_REMOVE_FAIL);
         }
         //3  删除笔记分类
-        Integer res = noteCategoryDao.removeNoteCategory(categoryName, userId);
+        Integer res = noteCategoryDao.removeNoteCategoryByCategoryNameAndUserId(categoryName, userId);
         if (res == 1) {
             return ServiceResult.success(ResultEnum.NOTE_CATEGORY_REMOVE_SUCCESS.getMessage());
         }
@@ -118,7 +118,7 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     @Transactional
     public ServiceResult<String> updateNoteCategory(NoteCategory noteCategory) {
 
-        NoteCategory noteCategory1 = getNoteCategoryById(noteCategory.getCategoryId()).getResult();
+        NoteCategory noteCategory1 = getCategoryByCategoryId(noteCategory.getCategoryId()).getResult();
         noteCategory1.setCategoryDescription(noteCategory.getCategoryDescription());
         noteCategory1.setCategoryName(noteCategory.getCategoryName());
         Integer res = noteCategoryDao.updateNoteCategory(noteCategory1);

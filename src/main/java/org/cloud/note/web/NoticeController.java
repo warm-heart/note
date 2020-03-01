@@ -30,7 +30,7 @@ public class NoticeController {
                                          @RequestParam(defaultValue = "5") Integer size,
                                          HttpServletRequest request) {
 
-        ServiceResult<NoticeDTO> serviceResult = noticeService.findAllNoticeByPage(page, size);
+        ServiceResult<NoticeDTO> serviceResult = noticeService.listNoticeByPage(page, size);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -44,7 +44,7 @@ public class NoticeController {
         if (StringUtils.isEmpty(String.valueOf(noticeId))) {
             return ApiResponse.error(ResultEnum.PARAM_ERROR);
         }
-        ServiceResult<Notice> serviceResult = noticeService.findNoticeById(noticeId);
+        ServiceResult<Notice> serviceResult = noticeService.getNoticeByNoticeId(noticeId);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());

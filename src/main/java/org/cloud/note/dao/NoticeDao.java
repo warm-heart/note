@@ -20,14 +20,14 @@ public interface NoticeDao {
 
     Integer updateNotice(Notice notice);
 
-    Integer removeNoticeById(Integer noticeId);
+    Integer removeNoticeByNoticeId(Integer noticeId);
 
-    List<Notice> findAllNoticeByPage(@Param(value = "page") Integer page,
+    List<Notice> listNoticeByPage(@Param(value = "page") Integer page,
                                      @Param(value = "size") Integer size);
 
-    Integer total();
+    Integer countNotice();
 
-    Notice findNoticeById(Integer noticeId);
+    Notice getNoticeByNoticeId(Integer noticeId);
 
 
 }

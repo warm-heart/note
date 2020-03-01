@@ -27,8 +27,8 @@ public class NoteShareServiceImpl implements NoteShareService {
 
     @Override
     @Transactional
-    public boolean saveShare(NoteShare noteShare) {
-        Integer res = noteShareDao.saveShare(noteShare);
+    public boolean saveNoteShare(NoteShare noteShare) {
+        Integer res = noteShareDao.saveNoteShare(noteShare);
         if (res == 1) {
             return true;
         }
@@ -37,8 +37,8 @@ public class NoteShareServiceImpl implements NoteShareService {
 
     @Override
     @Transactional
-    public boolean removeShareByNoteId(Integer noteId) {
-        Integer res = noteShareDao.removeShareByNoteId(noteId);
+    public boolean removeNoteShareByNoteId(Integer noteId) {
+        Integer res = noteShareDao.removeNoteShareByNoteId(noteId);
         if (res >= 1) {
             return true;
         }
@@ -48,15 +48,15 @@ public class NoteShareServiceImpl implements NoteShareService {
 
     @Override
     @Transactional
-    public ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size) {
-        Integer total = noteShareDao.getTotal();
+    public ServiceResult<NoteShareDTO> listNoteShareByPage(Integer page, Integer size) {
+        Integer total = noteShareDao.countNoteShare();
         if (total == 0) {
             return ServiceResult.error("暂时没有分享的笔记");
         }
         if (page != null && size != null) {
             page = (page - 1) * size;
         }
-        List<NoteShareVO> noteShareVOList = noteShareDao.findNoteShareByPage(page, size);
+        List<NoteShareVO> noteShareVOList = noteShareDao.listNoteShareByPage(page, size);
         for (NoteShareVO noteShareVO : noteShareVOList) {
             String str = noteShareVO.getNoteContext();
             str = str.replaceAll("<.+?>", "");

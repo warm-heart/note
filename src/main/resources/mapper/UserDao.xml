@@ -4,12 +4,12 @@
 <mapper namespace="org.cloud.note.dao.UserDao">
 
 
-    <select id="findByUserName" resultType="org.cloud.note.entity.User">
+    <select id="getUserByName" resultType="org.cloud.note.entity.User">
         select * from user where user_name=#{userName}
     </select>
 
 
-    <select id="findByUserId" resultType="org.cloud.note.entity.User">
+    <select id="getUserById" resultType="org.cloud.note.entity.User">
         select * from user where user_id=#{userId}
     </select>
 
@@ -23,7 +23,7 @@
         where user_id=#{userId}
     </update>
 
-    <insert id="createUser" parameterType="org.cloud.note.entity.User"
+    <insert id="saveUser" parameterType="org.cloud.note.entity.User"
             useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert  into user(user_name, nick_name, user_password, user_icon,user_address, user_email,
         user_phone,user_sex,birthday)
@@ -36,25 +36,25 @@
          update user set user_status=1 where user_id=#{userId}
     </update>
 
-    <update id="deBlock">
+    <update id="deBlockUser">
         update user set user_status=0 where user_id=#{userId}
     </update>
 
 
-    <select id="getAllUser" resultType="org.cloud.note.entity.User">
+    <select id="listUser" resultType="org.cloud.note.entity.User">
         select  * from  user limit #{page},#{size}
     </select>
 
-    <select id="getTotal" resultType="java.lang.Integer">
+    <select id="countUser" resultType="java.lang.Integer">
         select count(*) from user
     </select>
 
 
-    <select id="getAllLockUser" resultType="org.cloud.note.entity.User">
+    <select id="listLockUser" resultType="org.cloud.note.entity.User">
         select  * from  user where user_status=1 limit #{page},#{size}
     </select>
 
-    <select id="getLockTotal" resultType="java.lang.Integer">
+    <select id="countLockUser" resultType="java.lang.Integer">
         select count(*) from user where user_status=1
     </select>
 </mapper>

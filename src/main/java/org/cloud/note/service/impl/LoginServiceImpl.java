@@ -40,7 +40,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ServiceResult<String> login(String userName, String password) {
-        User user = userService.findByUserName(userName);
+        User user = userService.getUserByName(userName);
         if (user.getUserStatus() == 1) {
             throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
         }

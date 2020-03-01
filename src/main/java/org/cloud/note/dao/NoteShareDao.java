@@ -17,12 +17,11 @@ import java.util.List;
 @Repository
 public interface NoteShareDao {
 
-    Integer saveShare(NoteShare noteShare);
+    Integer saveNoteShare(NoteShare noteShare);
 
-    Integer removeShareByNoteId(Integer noteId);
+    Integer removeNoteShareByNoteId(Integer noteId);
 
     Integer incrementLoveCount(Integer noteId);
-
 
 
     /**
@@ -32,12 +31,12 @@ public interface NoteShareDao {
      * @param size 每页数量
      * @return
      */
-    List<NoteShareVO> findNoteShareByPage(@Param(value = "page") Integer page,
+    List<NoteShareVO> listNoteShareByPage(@Param(value = "page") Integer page,
                                           @Param(value = "size") Integer size);
 
 
     /**
      * @return 获取所有条数
      */
-    Integer getTotal();
+    Integer countNoteShare();
 }

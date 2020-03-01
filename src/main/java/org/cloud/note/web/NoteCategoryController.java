@@ -32,7 +32,7 @@ public class NoteCategoryController {
     @PostMapping(value = "/getNoteCategory")
     public ApiResponse<List<NoteCategory>> createNote(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("token");
-        ServiceResult<List<NoteCategory>> serviceResult = noteCategoryService.getNoteCategoryByUserId(token);
+        ServiceResult<List<NoteCategory>> serviceResult = noteCategoryService.listNoteCategoryByUserId(token);
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
         }
@@ -47,7 +47,7 @@ public class NoteCategoryController {
         String token = request.getHeader("token");
 
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
-        ServiceResult<String> serviceResult = noteCategoryService.createNoteCategory(
+        ServiceResult<String> serviceResult = noteCategoryService.saveNoteCategory(
                 noteCategory.getCategoryName(), noteCategory.getCategoryDescription(), userId);
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());

@@ -1,8 +1,11 @@
 package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cloud.note.dao.NoteCategoryDao;
+import org.cloud.note.dao.NoteDao;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.UserDao;
+import org.cloud.note.dto.UserDTO;
 import org.cloud.note.entity.User;
 import org.cloud.note.enums.ResultEnum;
 
@@ -21,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangqianlong
@@ -37,19 +42,24 @@ public class UserServiceImpl implements UserService {
     UserDao userDao;
 
     @Autowired
+    NoteCategoryDao noteCategoryDao;
+    @Autowired
+    NoteDao noteDao;
+
+    @Autowired
     NoteCategoryService noteCategoryService;
 
     @Override
-    public User findByUserName(String userName) {
-        User user = userDao.findByUserName(userName);
+    public User getUserByName(String userName) {
+        User user = userDao.getUserByName(userName);
         if (user == null)
             throw new UserException(ResultEnum.USER_NOT_FOUND);
         return user;
     }
 
     @Override
-    public User findByUserId(Integer userId) {
-        User user = userDao.findByUserId(userId);
+    public User getUserById(Integer userId) {
+        User user = userDao.getUserById(userId);
         if (user == null)
             throw new UserException(ResultEnum.USER_NOT_FOUND);
         return user;
@@ -96,7 +106,7 @@ public class UserServiceImpl implements UserService {
         String userId = stringRedisTemplate.opsForValue().get(token);
         if (StringUtils.isEmpty(userId))
             throw new UnauthorizedException(ResultEnum.UNAUTHORIZED);
-        User user = userDao.findByUserId(Integer.valueOf(userId));
+        User user = userDao.getUserById(Integer.valueOf(userId));
         if (user == null) {
             throw new UserException("请重新登录");
         }
@@ -113,19 +123,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ServiceResult<String> createUser(User user) {
+    public ServiceResult<String> saveUser(User user) {
         //检查名称是否被注册过
-        User user1 = userDao.findByUserName(user.getUserName());
+        User user1 = userDao.getUserByName(user.getUserName());
         if (user1 != null) {
             return ServiceResult.error(ResultEnum.USER_NAME_IS_ALREADY_USED.getMessage());
         }
         // 1 保存用户
         user.setUserPassword(MD5Utils.encode(user.getUserPassword()));
         user.setUserIcon("http://localhost:8080/Image/defualt_avatar.jpg");
-        Integer res = userDao.createUser(user);
+        Integer res = userDao.saveUser(user);
 
         // 2 创建默认笔记本
-        noteCategoryService.createNoteCategory("默认笔记分类", "默认笔记分类", user.getUserId());
+        noteCategoryService.saveNoteCategory("默认笔记分类", "默认笔记分类", user.getUserId());
         if (res == 1) {
             return ServiceResult.success(ResultEnum.USER_CREATE_SUCCESS.getMessage());
         }
@@ -136,16 +146,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ServiceResult<String> updateUser(User user) {
 
-        User user1 = findByUserId(user.getUserId());
-        user1.setUserEmail(user.getUserEmail());
+        User user1 = getUserByName(user.getUserName());
+
         user1.setNickName(user.getNickName());
-        user1.setUserPhone(user.getUserPhone());
         user1.setUserAddress(user.getUserAddress());
-        user1.setUserPassword(MD5Utils.encode(user1.getUserPassword()));
-        user1.setUserName(user.getUserName());
         user1.setUserSex(user.getUserSex());
-
-
+        user1.setBirthday(user.getBirthday());
+        user1.setUserEmail(user.getUserEmail());
+        user1.setUserPhone(user.getUserPhone());
         Integer res = userDao.updateUser(user1);
         if (res == 1) {
             return ServiceResult.success(ResultEnum.USER_UPDATE_SUCCESS.getMessage());
@@ -157,7 +165,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public ServiceResult<String> findPassword(String password, String userName) {
         log.warn("用户 {} 找回密码 修改密码", userName);
-        User user = this.findByUserName(userName);
+        User user = this.getUserByName(userName);
         user.setUserPassword(MD5Utils.encode(password));
         Integer res = userDao.updateUser(user);
         if (res == 1) {
@@ -168,9 +176,90 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ServiceResult<String> updatePassword(String password, String newPassword, String token) {
-        //todo
-        return null;
+    public ServiceResult<String> updatePassword(String oldPassword, String newPassword, String token) {
+        Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
+        User user = userDao.getUserById(userId);
+        if (user == null) {
+            throw new UserException(ResultEnum.USER_NOT_FOUND);
+        }
+        if (!MD5Utils.matches(oldPassword, user.getUserPassword())) {
+            return ServiceResult.error("原始密码错误");
+        }
+        user.setUserPassword(MD5Utils.encode(newPassword));
+        Integer res = userDao.updateUser(user);
+        if (res == 1)
+            return ServiceResult.success(ResultEnum.USER_PASSWORD_UPDATE_SUCCESS.getMessage());
+        throw new UserException(ResultEnum.USER_PASSWORD_UPDATE_FAIL);
+    }
+
+    @Override
+    public ServiceResult<UserDTO> listUser(Integer page, Integer size) {
+        // 默认从0开始
+        if (page != null && size != null) {
+            page = (page - 1) * size;
+        }
+        Integer total = userDao.countUser();
+        if (total == 0) {
+            //throw new NoteException(ResultEnum.YOUR_NOTE_IS_EMPTY);
+            return ServiceResult.error("无用户");
+        }
+        List<User> userList = userDao.listUser(page, size);
+
+        UserDTO userDTO = new UserDTO(userList, total);
+        return ServiceResult.success(userDTO);
+    }
+
+    @Override
+    public ServiceResult<UserDTO> listLockUser(Integer page, Integer size) {
+        // 默认从0开始
+        if (page != null && size != null) {
+            page = (page - 1) * size;
+        }
+        Integer total = userDao.countLockUser();
+        if (total == 0) {
+            //throw new NoteException(ResultEnum.YOUR_NOTE_IS_EMPTY);
+            return ServiceResult.error("无用户");
+        }
+        List<User> userList = userDao.listLockUser(page, size);
+
+        UserDTO userDTO = new UserDTO(userList, total);
+        return ServiceResult.success(userDTO);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> deBlockUser(Integer userId) {
+        log.info("解封Id：{} 的用户", userId);
+        Integer res = userDao.deBlockUser(userId);
+
+        if (1 == res) {
+
+            return ServiceResult.success(ResultEnum.USER_ACCOUNT_DE_BLOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_ACCOUNT_DE_BLOCK_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> lockUser(Integer userId) {
+        log.info("封禁Id：{} 的用户", userId);
+        Integer res = userDao.lockUser(userId);
+        if (1 == res) {
+            return ServiceResult.success(ResultEnum.USER_ACCOUNT_LOCK_SUCCESS.getMessage());
+        }
+        throw new UserException(ResultEnum.USER_ACCOUNT_LOCK_FAIL);
+    }
+
+    @Override
+    public ServiceResult<List<Integer>> countNoteAndCategory(String token) {
+
+        Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
+        List<Integer> list = new ArrayList<>();
+        Integer countNote = noteDao.countNoteByUserId(userId);
+        Integer countCategory = noteCategoryDao.countCategoryByuserId(userId);
+        list.add(countNote);
+        list.add(countCategory);
+        return ServiceResult.success(list);
     }
 
 }

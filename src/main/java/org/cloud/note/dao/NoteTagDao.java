@@ -15,18 +15,21 @@ import java.util.List;
 @Repository
 public interface NoteTagDao {
 
-    List<NoteTag> findByNoteId(Integer noteId);
+    List<NoteTag> listNoteTagByNoteId(Integer noteId);
 
-    NoteTag findByNoteTagId(Integer tagId);
+    NoteTag getNOteTagByNoteTagId(Integer tagId);
 
     Integer updateNoteTag(NoteTag noteTag);
 
-    List<NoteTag> findAllNoteTagByPage(@Param(value = "page") Integer page,
-                                       @Param(value = "size") Integer size);
 
     Integer saveNoteTag(NoteTag noteTag);
 
-    Integer getTotal();
+    Integer removeNoteTagByNoteId(Integer noteId);
 
-    Integer removeByNoteId(Integer noteId);
+    Integer countNoteTag();
+
+    List<NoteTag> listNoteTagByPage(@Param(value = "page") Integer page,
+                                    @Param(value = "size") Integer size);
+
+
 }

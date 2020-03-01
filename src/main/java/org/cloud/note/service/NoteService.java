@@ -22,7 +22,7 @@ public interface NoteService {
      * @param token
      * @return
      */
-    ServiceResult<NoteDTO> getAllNoteByPageAndUserId(Integer page, Integer size, String token);
+    ServiceResult<NoteDTO> listNoteByPageAndUserId(Integer page, Integer size, String token);
 
 
     /**
@@ -32,7 +32,7 @@ public interface NoteService {
      * @param token
      * @return
      */
-    ServiceResult<String> createNote(NoteVO noteVO, String token);
+    ServiceResult<String> saveNote(NoteVO noteVO, String token);
 
 
     /**
@@ -49,7 +49,7 @@ public interface NoteService {
      * @param noteId
      * @return
      */
-    ServiceResult<String> removeByNoteId(Integer noteId);
+    ServiceResult<String> removeNoteByNoteId(Integer noteId);
 
     /**
      * 修改笔记
@@ -66,7 +66,7 @@ public interface NoteService {
      * @param token
      * @return
      */
-    ServiceResult<List<Note>> getNoteByCategoryIdAndUserId(Integer categoryId, String token);
+    ServiceResult<List<Note>> listNoteByCategoryIdAndUserId(Integer categoryId, String token);
 
     /**
      * 分享笔记
@@ -77,12 +77,30 @@ public interface NoteService {
     ServiceResult<String> shareNote(Integer noteId);
 
 
-    /** 取消分享
+    /**
+     * 取消分享
+     *
      * @param noteId
      * @return
      */
     ServiceResult<String> cancelShareNote(Integer noteId);
 
 
-    ServiceResult<List<Note>> search(String noteName,String token);
+    ServiceResult<List<Note>> searchByNoteTitleAndUserId(String noteTitle, String token);
+
+
+    ServiceResult<List<Note>> searchByNoteTitle(String noteTitle);
+
+
+    ServiceResult<NoteDTO> listNoteByPage(Integer page, Integer size);
+
+
+    ServiceResult<NoteDTO> listLockNoteByPage(Integer page, Integer size);
+
+
+    ServiceResult<String> deBlockNote(Integer noteId);
+
+
+    ServiceResult<String> lockNote(Integer noteId);
+
 }

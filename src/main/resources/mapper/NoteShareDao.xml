@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.cloud.note.dao.NoteShareDao">
 
-    <insert id="saveShare" parameterType="org.cloud.note.entity.NoteShare">
+    <insert id="saveNoteShare" parameterType="org.cloud.note.entity.NoteShare">
         insert into note_share(user_id, note_id) values (#{userId},#{noteId})
     </insert>
 
-    <delete id="removeShareByNoteId">
+    <delete id="removeNoteShareByNoteId">
         delete from note_share where note_id=#{noteId}
     </delete>
 
@@ -16,12 +16,12 @@
     </update>
 
 
-    <select id="findNoteShareByPage" resultType="org.cloud.note.VO.NoteShareVO">
+    <select id="listNoteShareByPage" resultType="org.cloud.note.VO.NoteShareVO">
         select * from note_info,note_share where note_share.note_id=note_info.note_id  limit #{page},#{size}
     </select>
 
 
-    <select id="getTotal" resultType="java.lang.Integer">
+    <select id="countNoteShare" resultType="java.lang.Integer">
         select count(*) from note_share
     </select>
 

@@ -20,13 +20,13 @@ public interface UserDao {
      * @param userName 用户名
      * @return
      */
-    User findByUserName(String userName);
+    User getUserByName(String userName);
 
     /**
      * @param userId 用户ID
      * @return
      */
-    User findByUserId(Integer userId);
+    User getUserById(Integer userId);
 
     /**
      * 修改用户信息
@@ -42,7 +42,7 @@ public interface UserDao {
      * @param user
      * @return
      */
-    Integer createUser(User user);
+    Integer saveUser(User user);
 
     /**
      * 封禁用户
@@ -58,32 +58,39 @@ public interface UserDao {
      * @param userId
      * @return
      */
-    Integer deBlock(Integer userId);
+    Integer deBlockUser(Integer userId);
 
     /**
      * 获取所有用户
      *
      * @return
      */
-    List<User> getAllUser(@Param(value = "page") Integer page,
-                          @Param(value = "size") Integer size);
+    List<User> listUser(@Param(value = "page") Integer page,
+                        @Param(value = "size") Integer size);
 
     /**
-     * 获取总数
+     * 获取所有用户总数
      *
      * @return
      */
-    Integer getTotal();
+    Integer countUser();
 
-
-    List<User> getAllLockUser(@Param(value = "page") Integer page,
-                          @Param(value = "size") Integer size);
 
     /**
-     * 获取总数
+     * 获取所有封禁用户
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    List<User> listLockUser(@Param(value = "page") Integer page,
+                            @Param(value = "size") Integer size);
+
+    /**
+     * 获取封禁用户总数
      *
      * @return
      */
-    Integer getLockTotal();
+    Integer countLockUser();
 
 }

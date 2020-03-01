@@ -35,7 +35,7 @@ public class NoteController {
     public ApiResponse<String> createNote(@RequestBody @Valid NoteVO noteVO, HttpServletRequest request, HttpServletResponse response) {
 
         String token = request.getHeader("token");
-        ServiceResult<String> serviceResult = noteService.createNote(noteVO, token);
+        ServiceResult<String> serviceResult = noteService.saveNote(noteVO, token);
         if (serviceResult.isSuccess())
             return ApiResponse.success(serviceResult.getResult());
         return ApiResponse.error(serviceResult.getMessage());
@@ -48,7 +48,7 @@ public class NoteController {
                                        HttpServletRequest request) {
 
         String token = request.getHeader("token");
-        ServiceResult<NoteDTO> serviceResult = noteService.getAllNoteByPageAndUserId(page, size, token);
+        ServiceResult<NoteDTO> serviceResult = noteService.listNoteByPageAndUserId(page, size, token);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -77,7 +77,7 @@ public class NoteController {
     public ApiResponse<String> removeNote(Integer noteId,
                                           HttpServletRequest request) {
 
-        ServiceResult<String> serviceResult = noteService.removeByNoteId(noteId);
+        ServiceResult<String> serviceResult = noteService.removeNoteByNoteId(noteId);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -105,7 +105,7 @@ public class NoteController {
                                                       HttpServletRequest request) {
 
         String token = request.getHeader("token");
-        ServiceResult<List<Note>> serviceResult = noteService.getNoteByCategoryIdAndUserId(categoryId, token);
+        ServiceResult<List<Note>> serviceResult = noteService.listNoteByCategoryIdAndUserId(categoryId, token);
 
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
@@ -145,13 +145,13 @@ public class NoteController {
     }
 
     @PostMapping(value = "/search")
-    public ApiResponse<List<Note>> search(String noteName,
+    public ApiResponse<List<Note>> search(String noteTitle,
                                           HttpServletRequest request) {
         String token = request.getHeader("token");
-        if (StringUtils.isEmpty(noteName)) {
+        if (StringUtils.isEmpty(noteTitle)) {
             return ApiResponse.error("请输入关键词");
         }
-        ServiceResult<List<Note>> result = noteService.search(noteName, token);
+        ServiceResult<List<Note>> result = noteService.searchByNoteTitleAndUserId(noteTitle, token);
         if (result.isSuccess()) {
             return ApiResponse.success(result.getResult());
         }

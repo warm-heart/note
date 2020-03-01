@@ -19,16 +19,20 @@ import java.util.List;
 public interface NoteDao {
 
     /**
+     * 根据笔记标题获取笔记
+     *
      * @param noteTitle 笔记名
      * @return
      */
-    Note findByNoteTitle(String noteTitle);
+    Note getNoteByNoteTitle(String noteTitle);
 
     /**
+     * 根据笔记ID获取笔记
+     *
      * @param noteId 笔记ID
      * @return
      */
-    Note findByNoteId(Integer noteId);
+    Note getNoteByNoteId(Integer noteId);
 
     /**
      * 修改笔记信息
@@ -40,50 +44,77 @@ public interface NoteDao {
 
 
     /**
-     * 分页获取用户的笔记
+     * 用户分页获取笔记
      *
      * @param page 页数开始的下标
      * @param size 每页数量
      * @return
      */
-    List<Note> findAllNoteByPageAndUserId(@Param(value = "page") Integer page,
-                                          @Param(value = "size") Integer size,
-                                          @Param(value = "userId") Integer userId);
+    List<Note> listNoteByUserId(@Param(value = "page") Integer page,
+                                @Param(value = "size") Integer size,
+                                @Param(value = "userId") Integer userId);
 
 
     /**
      * @return 获取用户的所有条数
      */
-    Integer getTotalByUserId(Integer userId);
+    Integer countNoteByUserId(Integer userId);
 
     /**
-     * 获取总数
+     * 获取所有笔记总数
      *
      * @return
      */
-    Integer getTotal();
+    Integer countNote();
 
 
+    /**
+     * 保存笔记
+     *
+     * @param note
+     * @return
+     */
     Integer saveNote(Note note);
 
-    Integer removeByNoteId(Integer noteId);
+    /**
+     * 通过笔记ID删除笔记
+     *
+     * @param noteId
+     * @return
+     */
+    Integer removeNoteByNoteId(Integer noteId);
 
-    List<Note> findByCategoryIdAndUserId(@Param(value = "categoryId") Integer categoryId,
-                                         @Param(value = "userId") Integer userId);
+    /**
+     * 通过用户ID 和分类ID获取笔记
+     *
+     * @param categoryId
+     * @param userId
+     * @return
+     */
+    List<Note> listNoteByCategoryIdAndUserId(@Param(value = "categoryId") Integer categoryId,
+                                             @Param(value = "userId") Integer userId);
 
 
+    /**
+     * 查询时间端  测试用
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     List<Note> findByTime(@Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
 
     /**
      * select * from  note_info where note_title like CONCAT('%',#{keyWord},'%')
      * select * from  note_info where note_title like '%${keyWord}%'
+     * 根据用户ID和笔记标题获取笔记
      *
-     * @param keyWord
+     * @param noteTitle
      * @return
      */
-    List<Note> findByKeyWord(@Param(value = "keyWord") String keyWord,
-                             @Param(value = "userId") Integer userId);
+    List<Note> listNoteByNoteTitleAndUserId(@Param(value = "noteTitle") String noteTitle,
+                                            @Param(value = "userId") Integer userId);
 
     /**
      * 获取所有笔记
@@ -92,15 +123,38 @@ public interface NoteDao {
      * @param size
      * @return
      */
-    List<Note> findAllNoteByPage(@Param(value = "page") Integer page,
-                                 @Param(value = "size") Integer size);
+    List<Note> listNoteByPage(@Param(value = "page") Integer page,
+                              @Param(value = "size") Integer size);
 
+    /**
+     * 锁定笔记
+     *
+     * @param noteId
+     * @return
+     */
     Integer lockNote(Integer noteId);
 
+    /**
+     * 截所笔记
+     *
+     * @param noteId
+     * @return
+     */
     Integer deBlockNote(Integer noteId);
 
-    List<Note> findAllLockNoteByPage(@Param(value = "page") Integer page,
-                                 @Param(value = "size") Integer size);
+    /** 获取所有封禁笔记
+     * @param page
+     * @param size
+     * @return
+     */
+    List<Note> listLockNoteByPage(@Param(value = "page") Integer page,
+                                  @Param(value = "size") Integer size);
 
-    Integer getLockTotal();
+    /** 所有封禁笔记总数
+     * @return
+     */
+    Integer countLockNote();
+
+
+    List<Note> listNoteByNoteTitle(String keyWord);
 }

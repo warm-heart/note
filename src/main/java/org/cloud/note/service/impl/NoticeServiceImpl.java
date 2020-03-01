@@ -48,8 +48,8 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public ServiceResult<String> removeNoticeById(Integer noticeId) {
-        Integer res = noticeDao.removeNoticeById(noticeId);
+    public ServiceResult<String> removeNoticeByNoticeId(Integer noticeId) {
+        Integer res = noticeDao.removeNoticeByNoticeId(noticeId);
         if (res == 1) {
             return ServiceResult.success("删除成功");
         }
@@ -57,25 +57,25 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public ServiceResult<NoticeDTO> findAllNoticeByPage(Integer page, Integer size) {
+    public ServiceResult<NoticeDTO> listNoticeByPage(Integer page, Integer size) {
         // 默认从0开始
         if (page != null && size != null) {
             page = (page - 1) * size;
         }
-        Integer total = noticeDao.total();
+        Integer total = noticeDao.countNotice();
         if (total == 0) {
             //throw new NoteException(ResultEnum.YOUR_NOTE_IS_EMPTY);
             return ServiceResult.error("暂时没有公告");
         }
-        List<Notice> notices = noticeDao.findAllNoticeByPage(page, size);
+        List<Notice> notices = noticeDao.listNoticeByPage(page, size);
 
         NoticeDTO noticeDTO = new NoticeDTO(notices, total);
         return ServiceResult.success(noticeDTO);
     }
 
     @Override
-    public ServiceResult<Notice> findNoticeById(Integer noticeId) {
-        Notice notice = noticeDao.findNoticeById(noticeId);
+    public ServiceResult<Notice> getNoticeByNoticeId(Integer noticeId) {
+        Notice notice = noticeDao.getNoticeByNoticeId(noticeId);
         if (notice == null) {
             return ServiceResult.error("没有此公告");
         }

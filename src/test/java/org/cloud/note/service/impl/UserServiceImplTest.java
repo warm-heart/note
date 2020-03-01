@@ -35,6 +35,6 @@ class UserServiceImplTest extends NoteApplicationTests {
         user.setUserEmail("178625120@qq.com");
         user.setUserIcon("http:localodad");
 
-        userService.createUser(user);
+        userService.saveUser(user);
     }
 }

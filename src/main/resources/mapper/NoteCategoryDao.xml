@@ -4,7 +4,7 @@
 <mapper namespace="org.cloud.note.dao.NoteCategoryDao">
 
 
-    <select id="findByUserId" resultType="org.cloud.note.entity.NoteCategory">
+    <select id="listNoteCategoryByUserId" resultType="org.cloud.note.entity.NoteCategory">
         select * from note_category where user_id=#{userId}
     </select>
 
@@ -15,12 +15,12 @@
         where category_id=#{categoryId}
     </update>
 
-    <select id="findByCategoryId" resultType="org.cloud.note.entity.NoteCategory">
+    <select id="getCategoryByCategoryId" resultType="org.cloud.note.entity.NoteCategory">
         select  * from  note_category   where category_id=#{categoryId}
 
     </select>
 
-    <select id="getTotal" resultType="java.lang.Integer">
+    <select id="countCategoryByuserId" resultType="java.lang.Integer">
         select count(*) from note_category where user_id=#{userId}
     </select>
 
@@ -29,11 +29,11 @@
       #{categoryName},#{categoryDescription})
     </insert>
 
-    <select id="getNoteCategoryByNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
+    <select id="getNoteCategoryBycategoryNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
         select * from  note_category where category_name=#{categoryName} and user_id=#{userId}
     </select>
 
-    <delete id="removeNoteCategory">
+    <delete id="removeNoteCategoryByCategoryNameAndUserId">
         delete from  note_category where category_name=#{categoryName} and user_id=#{userId}
     </delete>
 </mapper>

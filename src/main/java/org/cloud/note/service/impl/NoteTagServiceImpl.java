@@ -40,16 +40,16 @@ public class NoteTagServiceImpl implements NoteTagService {
     }
 
     @Override
-    public List<NoteTag> getByNoteId(Integer noteId) {
-        List<NoteTag> noteTagList = noteTagDao.findByNoteId(noteId);
+    public List<NoteTag> listNoteTagByNoteId(Integer noteId) {
+        List<NoteTag> noteTagList = noteTagDao.listNoteTagByNoteId(noteId);
 
         return noteTagList;
     }
 
     @Override
     @Transactional
-    public Integer removeByNoteId(Integer noteId) {
-        Integer res = noteTagDao.removeByNoteId(noteId);
+    public Integer removeNoteTagByNoteId(Integer noteId) {
+        Integer res = noteTagDao.removeNoteTagByNoteId(noteId);
         //删除失败，日志记录 手动删除
        /* if (res <= 1) {
             log.info("删除NoteId为 {} 的标签失败", noteId);

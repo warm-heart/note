@@ -14,7 +14,7 @@ import java.util.List;
 public interface NoteTagService {
     ServiceResult<String> saveNoteTag(String noteLabel,Integer noteId);
 
-    List<NoteTag> getByNoteId(Integer noteId);
+    List<NoteTag> listNoteTagByNoteId(Integer noteId);
 
-    Integer removeByNoteId(Integer noteId);
+    Integer removeNoteTagByNoteId(Integer noteId);
 }

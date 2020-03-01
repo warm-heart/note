@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.cloud.note.dao.NoteDao">
-    <select id="findByNoteTitle" resultType="org.cloud.note.entity.Note">
+    <select id="getNoteByNoteTitle" resultType="org.cloud.note.entity.Note">
         select * from note_info where note_title=#{noteTitle}
     </select>
 
 
-    <select id="findByNoteId" resultType="org.cloud.note.entity.Note">
+    <select id="getNoteByNoteId" resultType="org.cloud.note.entity.Note">
         select * from note_info where note_id=#{noteId}
     </select>
 
@@ -20,16 +20,16 @@
 
     </update>
 
-    <select id="findAllNoteByPageAndUserId" resultType="org.cloud.note.entity.Note">
+    <select id="listNoteByUserId" resultType="org.cloud.note.entity.Note">
         select  * from  note_info where user_id=#{userId} limit #{page},#{size}
     </select>
 
-    <select id="getTotalByUserId" resultType="java.lang.Integer">
+    <select id="countNoteByUserId" resultType="java.lang.Integer">
         select count(*) from note_info where user_id=#{userId}
     </select>
 
 
-    <select id="getTotal" resultType="java.lang.Integer">
+    <select id="countNote" resultType="java.lang.Integer">
         select count(*) from note_info
     </select>
 
@@ -39,11 +39,11 @@
       (#{noteTitle},#{noteDescription},#{noteContext},#{categoryId},#{userId})
     </insert>
 
-    <delete id="removeByNoteId">
+    <delete id="removeNoteByNoteId">
         delete from note_info where note_id=#{noteId}
     </delete>
 
-    <select id="findByCategoryIdAndUserId" resultType="org.cloud.note.entity.Note">
+    <select id="listNoteByCategoryIdAndUserId" resultType="org.cloud.note.entity.Note">
         select * from note_info where category_id=#{categoryId} and user_id=#{userId}
     </select>
 
@@ -52,29 +52,17 @@
         select * from note_info where <![CDATA[ update_time >= #{startTime}]]>
         and <![CDATA[ update_time <= #{endTime}
         ]]>
-
     </select>
 
 
-    <select id="findByKeyWord" resultType="org.cloud.note.entity.Note">
-
-          select * from  note_info where user_id=#{userId} and note_title like CONCAT('%',#{keyWord},'%')
-
+    <select id="listNoteByNoteTitleAndUserId" resultType="org.cloud.note.entity.Note">
+          select * from  note_info where user_id=#{userId} and note_title like CONCAT('%',#{noteTitle},'%')
     </select>
 
 
-    <select id="findAllNoteByPage" resultType="org.cloud.note.entity.Note">
+    <select id="listNoteByPage" resultType="org.cloud.note.entity.Note">
         select  * from  note_info  limit #{page},#{size}
     </select>
-
-    <select id="findAllLockNoteByPage" resultType="org.cloud.note.entity.Note">
-        select  * from  note_info where note_status=1 limit #{page},#{size}
-    </select>
-
-    <select id="getLockTotal" resultType="java.lang.Integer">
-        select count(*) from note_info where note_status=1
-    </select>
-
 
     <update id="lockNote">
          update note_info set note_status=1 where note_id=#{noteId}
@@ -83,4 +71,17 @@
     <update id="deBlockNote">
         update note_info set note_status=0 where note_id=#{noteId}
     </update>
+
+    <select id="listLockNoteByPage" resultType="org.cloud.note.entity.Note">
+        select  * from  note_info where note_status=1 limit #{page},#{size}
+    </select>
+
+    <select id="countLockNote" resultType="java.lang.Integer">
+        select count(*) from note_info where note_status=1
+    </select>
+
+
+    <select id="listNoteByNoteTitle" resultType="org.cloud.note.entity.Note">
+          select * from  note_info where  note_title like CONCAT('%',#{keyWord},'%')
+    </select>
 </mapper>

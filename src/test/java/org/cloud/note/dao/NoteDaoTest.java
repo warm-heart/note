@@ -23,7 +23,7 @@ class NoteDaoTest extends NoteApplicationTests {
 
     @Test
     void findByNoteId() {
-        System.out.println(noteDao.findByNoteId(12));
+        System.out.println(noteDao.getNoteByNoteId(12));
     }
 
     @Test
@@ -47,7 +47,7 @@ class NoteDaoTest extends NoteApplicationTests {
 
     @Test
     void getTotal() {
-        System.out.println(noteDao.getTotal());
+        System.out.println(noteDao.countNote());
     }
 
     @Test
@@ -78,7 +78,7 @@ class NoteDaoTest extends NoteApplicationTests {
     @Test
     void findByKeyWord() {
 
-        List<Note> noteList = noteDao.findByKeyWord("三", 1);
+        List<Note> noteList = noteDao.listNoteByNoteTitleAndUserId("三", 1);
         System.out.println(noteList.size());
         System.out.println(noteList);
 

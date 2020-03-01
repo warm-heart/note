@@ -24,7 +24,7 @@ class NoteShareDaoTest extends NoteApplicationTests {
 
     @Test
     void findNoteShareByPage() {
-        System.out.println(noteShareDao.findNoteShareByPage(0, 6));
+        System.out.println(noteShareDao.listNoteShareByPage(0, 6));
     }
 
     @Test

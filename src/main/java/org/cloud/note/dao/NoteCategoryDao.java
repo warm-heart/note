@@ -18,20 +18,20 @@ import java.util.List;
 public interface NoteCategoryDao {
 
 
-    List<NoteCategory> findByUserId(Integer userId);
+    List<NoteCategory> listNoteCategoryByUserId(Integer userId);
 
     Integer updateNoteCategory(NoteCategory noteCategory);
 
-    NoteCategory findByCategoryId(Integer categoryId);
+    NoteCategory getCategoryByCategoryId(Integer categoryId);
 
-    Integer getTotal(Integer userId);
+    Integer countCategoryByuserId(Integer userId);
 
     Integer saveNoteCategory(NoteCategory noteCategory);
 
 
-    NoteCategory getNoteCategoryByNameAndUserId(@Param(value = "categoryName") String categoryName,
-                                    @Param(value = "userId") Integer userId);
+    NoteCategory getNoteCategoryBycategoryNameAndUserId(@Param(value = "categoryName") String categoryName,
+                                                        @Param(value = "userId") Integer userId);
 
-    Integer removeNoteCategory(@Param(value = "categoryName") String categoryName,
-                               @Param(value = "userId") Integer userId);
+    Integer removeNoteCategoryByCategoryNameAndUserId(@Param(value = "categoryName") String categoryName,
+                                                      @Param(value = "userId") Integer userId);
 }

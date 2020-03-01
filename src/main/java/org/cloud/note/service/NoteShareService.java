@@ -15,13 +15,13 @@ import org.cloud.note.entity.NoteShare;
 public interface NoteShareService {
 
 
-    boolean saveShare(NoteShare noteShare);
+    boolean saveNoteShare(NoteShare noteShare);
 
-    boolean removeShareByNoteId(Integer noteId);
+    boolean removeNoteShareByNoteId(Integer noteId);
 
 
 
-    ServiceResult<NoteShareDTO> findNoteShareByPage(Integer page, Integer size);
+    ServiceResult<NoteShareDTO> listNoteShareByPage(Integer page, Integer size);
 
 
 

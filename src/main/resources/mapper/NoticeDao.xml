@@ -16,20 +16,20 @@
     </update>
 
 
-    <delete id="removeNoticeById">
+    <delete id="removeNoticeByNoticeId">
           delete  from notice where notice_id=#{noticeId}
     </delete>
 
 
-    <select id="findAllNoticeByPage" resultType="org.cloud.note.entity.Notice">
+    <select id="listNoticeByPage" resultType="org.cloud.note.entity.Notice">
         select  * from  notice  order by update_time desc limit #{page},#{size}
     </select>
 
-    <select id="total" resultType="java.lang.Integer">
+    <select id="countNotice" resultType="java.lang.Integer">
         select count(*) from notice
     </select>
 
-    <select id="findNoticeById" resultType="org.cloud.note.entity.Notice">
+    <select id="getNoticeByNoticeId" resultType="org.cloud.note.entity.Notice">
 
         select * from  notice where notice_id=#{noticeId}
     </select>

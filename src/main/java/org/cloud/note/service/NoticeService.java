@@ -6,7 +6,6 @@ import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.Notice;
 
 
-
 /**
  * @author wangqianlong
  * @create 2020-02-18 13:25
@@ -19,12 +18,12 @@ public interface NoticeService {
 
     ServiceResult<String> updateNotice(Notice notice);
 
-    ServiceResult<String> removeNoticeById(Integer noticeId);
+    ServiceResult<String> removeNoticeByNoticeId(Integer noticeId);
 
-    ServiceResult<NoticeDTO> findAllNoticeByPage(@Param(value = "page") Integer page,
-                                                 @Param(value = "size") Integer size);
+    ServiceResult<NoticeDTO> listNoticeByPage(@Param(value = "page") Integer page,
+                                              @Param(value = "size") Integer size);
 
-    ServiceResult<Notice> findNoticeById(Integer noticeId);
+    ServiceResult<Notice> getNoticeByNoticeId(Integer noticeId);
 
 
 }

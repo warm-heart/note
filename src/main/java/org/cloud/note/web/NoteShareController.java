@@ -29,7 +29,7 @@ public class NoteShareController {
 
     @PostMapping("/getNoteShare")
     public ApiResponse<NoteShareDTO> noteShare(Integer page, Integer size) {
-        ServiceResult<NoteShareDTO> result = noteShareService.findNoteShareByPage(page, size);
+        ServiceResult<NoteShareDTO> result = noteShareService.listNoteShareByPage(page, size);
         if (result.isSuccess()) {
             return ApiResponse.success(result.getResult());
         }

@@ -17,7 +17,7 @@ public interface NoteCategoryService {
      * @param token token
      * @return
      */
-    ServiceResult<List<NoteCategory>> getNoteCategoryByUserId(String token);
+    ServiceResult<List<NoteCategory>> listNoteCategoryByUserId(String token);
 
     /**
      * 根据笔记分类名查找用户的笔记分类
@@ -26,7 +26,7 @@ public interface NoteCategoryService {
      * @param userId
      * @return
      */
-    ServiceResult<NoteCategory> getNoteCategoryByNameAndUserId(String categoryName, Integer userId);
+    ServiceResult<NoteCategory> getNoteCategoryBycategoryNameAndUserId(String categoryName, Integer userId);
 
     /**
      * 通过ID查找笔记分类信息
@@ -34,7 +34,7 @@ public interface NoteCategoryService {
      * @param categoryId
      * @return
      */
-    ServiceResult<NoteCategory> getNoteCategoryById(Integer categoryId);
+    ServiceResult<NoteCategory> getCategoryByCategoryId(Integer categoryId);
 
     /**
      * 创建笔记分类
@@ -44,7 +44,7 @@ public interface NoteCategoryService {
      * @param userId
      * @return
      */
-    ServiceResult<String> createNoteCategory(String categoryName, String categoryDescription, Integer userId);
+    ServiceResult<String> saveNoteCategory(String categoryName, String categoryDescription, Integer userId);
 
     /**
      * 删除笔记分类

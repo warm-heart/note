@@ -28,7 +28,7 @@ public class UserDaoTest extends NoteApplicationTests {
 
     @Test
     void findByUserName() {
-        System.out.println(userDao.findByUserName("cooper"));
+        System.out.println(userDao.getUserByName("cooper"));
         System.out.println(MD5Utils.encode("123456"));
     }
 
@@ -51,9 +51,9 @@ public class UserDaoTest extends NoteApplicationTests {
     @Test
 
     void findByUserId() {
-        System.out.println(userDao.findByUserId(1));
+        System.out.println(userDao.getUserById(1));
 
-        System.out.println(userDao.findByUserId(1));
+        System.out.println(userDao.getUserById(1));
     }
 
 
@@ -66,7 +66,7 @@ public class UserDaoTest extends NoteApplicationTests {
 
     @Test
     void deBlock() {
-        Integer res = userDao.deBlock(2);
+        Integer res = userDao.deBlockUser(2);
         System.out.println(res);
     }
 }

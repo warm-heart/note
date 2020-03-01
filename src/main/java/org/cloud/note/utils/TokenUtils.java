@@ -60,7 +60,7 @@ public class TokenUtils {
             return false;
         String userId = stringRedisTemplate.opsForValue().get(token);
         if (!StringUtils.isEmpty(userId)) {
-            User user = userService.findByUserId(Integer.valueOf(userId));
+            User user = userService.getUserById(Integer.valueOf(userId));
             if (user.getUserStatus() == 1) {
                 throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
             }
@@ -76,7 +76,7 @@ public class TokenUtils {
             return false;
         String userId = stringRedisTemplate.opsForValue().get(token);
         if (!StringUtils.isEmpty(userId)) {
-            User user = userService.findByUserId(Integer.valueOf(userId));
+            User user = userService.getUserById(Integer.valueOf(userId));
             if (user.getUserStatus() == 1) {
                 throw new UserException(ResultEnum.USER_ACCOUNT_LOCK);
             }

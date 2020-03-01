@@ -36,10 +36,14 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ApiResponse<List<String>> login(@RequestBody @Valid User user1) {
+    public ApiResponse<List<String>> login(@RequestBody User user1) {
+        if (StringUtils.isEmpty(user1.getUserName()) ||
+                StringUtils.isEmpty(user1.getUserPassword())) {
+            return ApiResponse.error("请填写用户名或密码");
+        }
         String userName = user1.getUserName();
         String password = user1.getUserPassword();
-        User user = userService.findByUserName(userName);
+        User user = userService.getUserByName(userName);
         ServiceResult serviceResult = loginService.login(userName, password);
 
         if (serviceResult.isSuccess()) {
@@ -85,7 +89,7 @@ public class LoginController {
         user.setUserSex(userVO.getUserSex());
         user.setBirthday(userVO.getBirthday());
         user.setUserPassword(userVO.getUserPassword());
-        ServiceResult result = userService.createUser(user);
+        ServiceResult result = userService.saveUser(user);
         if (result.isSuccess()) {
             return ApiResponse.success((String) result.getResult());
         }
@@ -99,7 +103,7 @@ public class LoginController {
         if (StringUtils.isEmpty(userName)) {
             return ApiResponse.error("请输入用户名");
         }
-        User user = userService.findByUserName(userName);
+        User user = userService.getUserByName(userName);
         List<String> list = new ArrayList<>();
         list.add(user.getUserEmail());
         list.add(user.getUserPhone());

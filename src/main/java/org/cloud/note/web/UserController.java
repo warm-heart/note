@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author wangqianlong
@@ -104,13 +105,13 @@ public class UserController {
     public ApiResponse<User> userInfo(HttpServletRequest request) {
         String token = request.getHeader("token");
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
-        User user = userService.findByUserId(userId);
+        User user = userService.getUserById(userId);
         return ApiResponse.success(user);
     }
 
 
     @PostMapping("/updateUser")
-    public ApiResponse<String> updateUser(@RequestBody User user) {
+    public ApiResponse<String> updateUser(@RequestBody @Valid User user) {
         ServiceResult result = userService.updateUser(user);
         if (result.isSuccess()) {
             return ApiResponse.success((String) result.getResult());
@@ -120,9 +121,26 @@ public class UserController {
 
 
     @PostMapping("/resetPassword")
-    public ApiResponse<String> userInfo(String password, String userName) {
-        //todo
-        return null;
+    public ApiResponse<String> userInfo(String oldPassword, String newPassword,
+                                        HttpServletRequest request) {
+        String token = request.getHeader("token");
+        ServiceResult<String> result = userService.updatePassword(oldPassword, newPassword, token);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
     }
+
+    @PostMapping("countNoteAndCategory")
+    public ApiResponse<List<Integer>> countNoteAndCategory(HttpServletRequest request) {
+
+        String token = request.getHeader("token");
+        ServiceResult<List<Integer>> result = userService.countNoteAndCategory(token);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+    }
+
 
 }
