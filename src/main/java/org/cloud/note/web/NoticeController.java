@@ -6,19 +6,17 @@ import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @author wangqianlong
  * @create 2020-01-06 17:22
  */
 @RestController
-@RequestMapping("/notice")
+    @RequestMapping("/notice")
 public class NoticeController {
 
     @Autowired
@@ -36,6 +34,17 @@ public class NoticeController {
             return ApiResponse.success(serviceResult.getResult());
         }
         return ApiResponse.error(serviceResult.getMessage());
+    }
+
+
+    @PostMapping("/createFeedBack")
+    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice) {
+
+        ServiceResult<String> result = noticeService.createFeedBackNotice(notice);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
     }
 
     @PostMapping(value = "/noticeDetail")

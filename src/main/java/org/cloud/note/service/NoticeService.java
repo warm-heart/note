@@ -16,12 +16,18 @@ public interface NoticeService {
 
     ServiceResult<String> createNotice(Notice notice);
 
+    ServiceResult<String> createFeedBackNotice(Notice notice);
+
     ServiceResult<String> updateNotice(Notice notice);
 
     ServiceResult<String> removeNoticeByNoticeId(Integer noticeId);
 
     ServiceResult<NoticeDTO> listNoticeByPage(@Param(value = "page") Integer page,
                                               @Param(value = "size") Integer size);
+
+    ServiceResult<NoticeDTO> listFeedBackNoticeByPage(@Param(value = "page") Integer page,
+                                                      @Param(value = "size") Integer size);
+
 
     ServiceResult<Notice> getNoticeByNoticeId(Integer noticeId);
 

@@ -27,11 +27,24 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     @Transactional
     public ServiceResult<String> createNotice(Notice notice) {
+        notice.setNoticeType(0);
         Integer res = noticeDao.createNotice(notice);
-        if (res == 1) {
+        if (res == 0) {
             return ServiceResult.success("创建成功");
         }
         return ServiceResult.error("创建失败");
+
+    }
+
+    @Override
+    @Transactional
+    public ServiceResult<String> createFeedBackNotice(Notice notice) {
+        notice.setNoticeType(1);
+        Integer res = noticeDao.createNotice(notice);
+        if (res == 1) {
+            return ServiceResult.success("反馈成功");
+        }
+        return ServiceResult.error("反馈失败");
 
     }
 
@@ -68,6 +81,24 @@ public class NoticeServiceImpl implements NoticeService {
             return ServiceResult.error("暂时没有公告");
         }
         List<Notice> notices = noticeDao.listNoticeByPage(page, size);
+
+        NoticeDTO noticeDTO = new NoticeDTO(notices, total);
+        return ServiceResult.success(noticeDTO);
+    }
+
+
+    @Override
+    public ServiceResult<NoticeDTO> listFeedBackNoticeByPage(Integer page, Integer size) {
+        // 默认从0开始
+        if (page != null && size != null) {
+            page = (page - 1) * size;
+        }
+        Integer total = noticeDao.countFeedBackNotice();
+        if (total == 0) {
+            //throw new NoteException(ResultEnum.YOUR_NOTE_IS_EMPTY);
+            return ServiceResult.error("暂时没有公告");
+        }
+        List<Notice> notices = noticeDao.listFeedBackNoticeByPage(page, size);
 
         NoticeDTO noticeDTO = new NoticeDTO(notices, total);
         return ServiceResult.success(noticeDTO);

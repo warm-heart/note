@@ -6,7 +6,7 @@
 
     <insert id="createNotice" parameterType="org.cloud.note.entity.Notice"
     >
-      INSERT  INTO notice(notice_title, notice_context) values (#{noticeTitle},#{noticeContext})
+      INSERT  INTO notice(notice_title, notice_context,notice_type) values (#{noticeTitle},#{noticeContext},#{noticeType})
     </insert>
 
     <update id="updateNotice" parameterType="org.cloud.note.entity.Notice">
@@ -22,11 +22,20 @@
 
 
     <select id="listNoticeByPage" resultType="org.cloud.note.entity.Notice">
-        select  * from  notice  order by update_time desc limit #{page},#{size}
+        select  * from  notice where notice_type=0 order by update_time desc limit #{page},#{size}
     </select>
 
     <select id="countNotice" resultType="java.lang.Integer">
-        select count(*) from notice
+        select count(*) from notice where notice_type=0
+    </select>
+
+
+    <select id="listFeedBackNoticeByPage" resultType="org.cloud.note.entity.Notice">
+        select  * from  notice where notice_type=1 order by update_time desc limit #{page},#{size}
+    </select>
+
+    <select id="countFeedBackNotice" resultType="java.lang.Integer">
+        select count(*) from notice where notice_type=1
     </select>
 
     <select id="getNoticeByNoticeId" resultType="org.cloud.note.entity.Notice">

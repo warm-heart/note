@@ -20,5 +20,7 @@ public class Notice implements Serializable {
     @NotEmpty(message = "公告内容不能为空")
     private String noticeContext;
 
+    Integer noticeType;
+
     private Date updateTime;
 }

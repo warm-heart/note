@@ -104,6 +104,7 @@ CREATE TABLE `notice` (
 `notice_id` bigint NOT NULL AUTO_INCREMENT,
 `notice_title` varchar(64) NOT NULL comment '公告标题',
 `notice_context` text   comment '公告内容',
+`notice_type`tinyint(3) NOT NULL default  '0' comment '公告类别,默认0 管理员公告，1用户反馈',
 `create_time` timestamp NOT NULL default current_timestamp comment '创建时间',
 `update_time` timestamp NOT NULL default current_timestamp on update current_timestamp comment '更新时间',
 key `idx_notice_title` (`notice_title`),

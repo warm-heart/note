@@ -23,9 +23,17 @@ public interface NoticeDao {
     Integer removeNoticeByNoticeId(Integer noticeId);
 
     List<Notice> listNoticeByPage(@Param(value = "page") Integer page,
-                                     @Param(value = "size") Integer size);
+                                  @Param(value = "size") Integer size);
+
 
     Integer countNotice();
+
+
+    Integer countFeedBackNotice();
+
+
+    List<Notice> listFeedBackNoticeByPage(@Param(value = "page") Integer page,
+                                          @Param(value = "size") Integer size);
 
     Notice getNoticeByNoticeId(Integer noticeId);
 
