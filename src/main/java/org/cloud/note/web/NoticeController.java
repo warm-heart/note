@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * @create 2020-01-06 17:22
  */
 @RestController
-    @RequestMapping("/notice")
+@RequestMapping("/notice")
 public class NoticeController {
 
     @Autowired
@@ -25,8 +25,8 @@ public class NoticeController {
 
     @PostMapping(value = "/getAllNotice")
     public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page,
-                                         @RequestParam(defaultValue = "5") Integer size,
-                                         HttpServletRequest request) {
+                                               @RequestParam(defaultValue = "5") Integer size,
+                                               HttpServletRequest request) {
 
         ServiceResult<NoticeDTO> serviceResult = noticeService.listNoticeByPage(page, size);
 
@@ -49,7 +49,7 @@ public class NoticeController {
 
     @PostMapping(value = "/noticeDetail")
     public ApiResponse<Notice> noticeDetail(Integer noticeId,
-                                          HttpServletRequest request) {
+                                            HttpServletRequest request) {
         if (StringUtils.isEmpty(String.valueOf(noticeId))) {
             return ApiResponse.error(ResultEnum.PARAM_ERROR);
         }

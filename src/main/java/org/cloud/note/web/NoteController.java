@@ -160,4 +160,16 @@ public class NoteController {
     }
 
 
+    @PostMapping(value = "/moveCategory")
+    public ApiResponse<String> moveCategory(Integer noteId, Integer categoryId,
+                                            HttpServletRequest request) {
+
+        ServiceResult<String> result = noteService.moveCategory(noteId, categoryId);
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+
+    }
+
 }

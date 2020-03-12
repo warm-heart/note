@@ -348,4 +348,20 @@ public class NoteServiceImpl implements NoteService {
         throw new UserException(ResultEnum.NOTE_LOCK_FAIL);
     }
 
+    @Override
+    @Transactional
+    public ServiceResult<String> moveCategory(Integer noteId, Integer categoryId) {
+        Note note = noteDao.getNoteByNoteId(noteId);
+        if (note == null) {
+            throw new NoteException(ResultEnum.NOTE_NOT_FOUND);
+        }
+        note.setCategoryId(categoryId);
+        Integer res = noteDao.updateNote(note);
+        if (res == 1) {
+            redisTemplate.delete(noteId.toString());
+            return ServiceResult.success("移动成功");
+        }
+        throw new NoteException("移动笔记分类失败");
+    }
+
 }

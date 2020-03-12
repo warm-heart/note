@@ -103,4 +103,6 @@ public interface NoteService {
 
     ServiceResult<String> lockNote(Integer noteId);
 
+    ServiceResult<String> moveCategory(Integer noteId, Integer categoryId);
+
 }
