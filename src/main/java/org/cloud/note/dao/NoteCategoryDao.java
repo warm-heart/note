@@ -30,7 +30,7 @@ public interface NoteCategoryDao {
     Integer saveNoteCategory(NoteCategory noteCategory);
 
 
-    NoteCategory getNoteCategoryBycategoryNameAndUserId(@Param(value = "categoryName") String categoryName,
+    NoteCategory getNoteCategoryByCategoryNameAndUserId(@Param(value = "categoryName") String categoryName,
                                                         @Param(value = "userId") Integer userId);
 
     Integer removeNoteCategoryByCategoryNameAndUserId(@Param(value = "categoryName") String categoryName,

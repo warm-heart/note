@@ -20,7 +20,7 @@
 
     </select>
 
-    <select id="countCategoryByuserId" resultType="java.lang.Integer">
+    <select id="countCategoryByUserId" resultType="java.lang.Integer">
         select count(*) from note_category where user_id=#{userId}
     </select>
 
@@ -29,7 +29,7 @@
       #{categoryName},#{categoryDescription})
     </insert>
 
-    <select id="getNoteCategoryBycategoryNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
+    <select id="getNoteCategoryByCategoryNameAndUserId" resultType="org.cloud.note.entity.NoteCategory">
         select * from  note_category where category_name=#{categoryName} and user_id=#{userId}
     </select>
 
@@ -39,6 +39,6 @@
 
     <select id="noteCategoryAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
          select count(category_name) as num ,category_name as name
-        from note_category group by category_name order by num desc limit 0,5;
+        from note_category group by category_name order by num desc limit 0,10;
     </select>
 </mapper>

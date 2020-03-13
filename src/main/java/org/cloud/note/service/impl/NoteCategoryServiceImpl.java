@@ -53,7 +53,7 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
 
     @Override
     public ServiceResult<NoteCategory> getNoteCategoryBycategoryNameAndUserId(String categoryName, Integer userId) {
-        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryBycategoryNameAndUserId(categoryName, userId);
+        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryByCategoryNameAndUserId(categoryName, userId);
         if (noteCategory == null) {
             throw new NoteException(ResultEnum.NOTE_CATEGORY_NOT_FOUND);
         }
@@ -89,7 +89,7 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     public ServiceResult<String> removeNoteCategory(String categoryName, Integer userId) {
         //1 如果笔记分类少于 1 则无法删除
         Integer count = noteCategoryDao.countCategoryByUserId(userId);
-        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryBycategoryNameAndUserId(categoryName, userId);
+        NoteCategory noteCategory = noteCategoryDao.getNoteCategoryByCategoryNameAndUserId(categoryName, userId);
         if (count <= 1) {
             return ServiceResult.error(ResultEnum.NOTE_CATEGORY_NOT_LESS_ONE.getMessage());
         }

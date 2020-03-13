@@ -39,7 +39,7 @@
 
     <select id="noteTagAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
         select count(note_label) as num ,note_label as name
-        from note_tag group by note_label order by  num desc limit 0,5;
+        from note_tag group by note_label order by  num desc limit 0,10;
     </select>
 
 </mapper>
