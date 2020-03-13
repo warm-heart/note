@@ -38,5 +38,6 @@ class NoteTagDaoTest extends NoteApplicationTests {
 
     @Test
     void getTotal() {
+        System.out.println(noteTagDao.noteTagAnalysis());
     }
 }

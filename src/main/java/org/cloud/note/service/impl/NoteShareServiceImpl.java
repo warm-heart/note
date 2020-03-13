@@ -3,6 +3,7 @@ package org.cloud.note.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.cloud.note.VO.NoteShareVO;
 import org.cloud.note.dao.NoteShareDao;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.NoteShareDTO;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.NoteShare;
@@ -79,5 +80,10 @@ public class NoteShareServiceImpl implements NoteShareService {
             return ServiceResult.success("点赞成功");
         }
         return ServiceResult.error("点赞失败");
+    }
+
+    @Override
+    public List<NoteAnalysis> noteShareAnalysis() {
+        return noteShareDao.noteShareAnalysis();
     }
 }

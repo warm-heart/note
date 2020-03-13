@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.cloud.note.VO.NoteVO;
 import org.cloud.note.dao.UserDao;
-import org.cloud.note.dto.ServiceResult;
+import org.cloud.note.dto.*;
 import org.cloud.note.dao.NoteDao;
-import org.cloud.note.dto.NoteDTO;
-import org.cloud.note.dto.NoteDetailDTO;
 import org.cloud.note.entity.*;
 import org.cloud.note.enums.ResultEnum;
 import org.cloud.note.exception.NoteException;
@@ -362,6 +360,52 @@ public class NoteServiceImpl implements NoteService {
             return ServiceResult.success("移动成功");
         }
         throw new NoteException("移动笔记分类失败");
+    }
+
+    @Override
+    public ServiceResult<NoteAnalysisDTO> noteAnalysis() {
+
+
+        List<NoteAnalysis> noteTagAnalysis = noteTagService.noteTagAnalysis();
+        List<NoteAnalysis> noteShareAnalysis = noteShareService.noteShareAnalysis();
+        List<NoteAnalysis> noteCategoryAnalysis = noteCategoryService.noteCategoryAnalysis();
+        List<NoteAnalysis> noteUserAnalysis = noteDao.noteUserAnalysis();
+
+
+        List<String> XTagAnalysis;
+        List<String> XShareAnalysis;
+        List<String> XCategoryAnalysis;
+        List<String> XUserAnalysis;
+        List<Integer> YTagAnalysis;
+        List<Integer> YShareAnalysis;
+        List<Integer> YCategoryAnalysis;
+        List<Integer> YUserAnalysis;
+
+        XTagAnalysis = noteTagAnalysis.stream().map(e -> e.getName()).collect(Collectors.toList());
+        XShareAnalysis = noteShareAnalysis.stream().map(e -> e.getName()).collect(Collectors.toList());
+        XCategoryAnalysis = noteCategoryAnalysis.stream().map(e -> e.getName()).collect(Collectors.toList());
+        XUserAnalysis = noteUserAnalysis.stream().map(e -> e.getName()).collect(Collectors.toList());
+
+
+        YShareAnalysis = noteShareAnalysis.stream().map(e -> e.getNum()).collect(Collectors.toList());
+        YCategoryAnalysis = noteCategoryAnalysis.stream().map(e -> e.getNum()).collect(Collectors.toList());
+        YUserAnalysis = noteUserAnalysis.stream().map(e -> e.getNum()).collect(Collectors.toList());
+
+        NoteAnalysisDTO noteAnalysisDTO = new NoteAnalysisDTO();
+
+        noteAnalysisDTO.setXTagAnalysis(XTagAnalysis);
+        noteAnalysisDTO.setXShareAnalysis(XShareAnalysis);
+        noteAnalysisDTO.setXCategoryAnalysis(XCategoryAnalysis);
+        noteAnalysisDTO.setXUserAnalysis(XUserAnalysis);
+
+
+        noteAnalysisDTO.setYShareAnalysis(YShareAnalysis);
+        noteAnalysisDTO.setYCategoryAnalysis(YCategoryAnalysis);
+        noteAnalysisDTO.setYUserAnalysis(YUserAnalysis);
+
+        noteAnalysisDTO.setNoteTagAnalysis(noteTagAnalysis);
+
+        return ServiceResult.success(noteAnalysisDTO);
     }
 
 }

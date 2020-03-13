@@ -211,8 +211,8 @@ public class AdminController {
 
     @PostMapping(value = "/getAllFeedBack")
     public ApiResponse<NoticeDTO> getAllFeedBack(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "5") Integer size,
-                                               HttpServletRequest request) {
+                                                 @RequestParam(defaultValue = "5") Integer size,
+                                                 HttpServletRequest request) {
 
         ServiceResult<NoticeDTO> serviceResult = noticeService.listFeedBackNoticeByPage(page, size);
 
@@ -234,6 +234,16 @@ public class AdminController {
             return ApiResponse.success(serviceResult.getResult());
         }
         return ApiResponse.error(serviceResult.getMessage());
+    }
+
+    @PostMapping("/noteAnalysis")
+    public ApiResponse<NoteAnalysisDTO> noteAnalysis() {
+        ServiceResult<NoteAnalysisDTO> result = noteService.noteAnalysis();
+        if (result.isSuccess()) {
+            return ApiResponse.success(result.getResult());
+        }
+        return ApiResponse.error(result.getMessage());
+
     }
 
 

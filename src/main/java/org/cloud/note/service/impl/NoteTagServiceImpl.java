@@ -1,6 +1,7 @@
 package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.NoteTagDao;
 import org.cloud.note.entity.NoteTag;
@@ -55,5 +56,10 @@ public class NoteTagServiceImpl implements NoteTagService {
             log.info("删除NoteId为 {} 的标签失败", noteId);
         }*/
         return res;
+    }
+
+    @Override
+    public List<NoteAnalysis> noteTagAnalysis() {
+        return noteTagDao.noteTagAnalysis();
     }
 }

@@ -1,5 +1,6 @@
 package org.cloud.note.service;
 
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.NoteCategory;
 
@@ -62,4 +63,6 @@ public interface NoteCategoryService {
      * @return
      */
     ServiceResult<String> updateNoteCategory(NoteCategory noteCategory);
+
+    List<NoteAnalysis> noteCategoryAnalysis();
 }

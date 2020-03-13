@@ -3,6 +3,7 @@ package org.cloud.note.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.cloud.note.VO.NoteShareVO;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.entity.Note;
 import org.cloud.note.entity.NoteShare;
 import org.springframework.stereotype.Repository;
@@ -39,4 +40,7 @@ public interface NoteShareDao {
      * @return 获取所有条数
      */
     Integer countNoteShare();
+
+
+    List<NoteAnalysis> noteShareAnalysis();
 }

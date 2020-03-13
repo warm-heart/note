@@ -3,6 +3,7 @@ package org.cloud.note.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.entity.NoteCategory;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +25,7 @@ public interface NoteCategoryDao {
 
     NoteCategory getCategoryByCategoryId(Integer categoryId);
 
-    Integer countCategoryByuserId(Integer userId);
+    Integer countCategoryByUserId(Integer userId);
 
     Integer saveNoteCategory(NoteCategory noteCategory);
 
@@ -34,4 +35,7 @@ public interface NoteCategoryDao {
 
     Integer removeNoteCategoryByCategoryNameAndUserId(@Param(value = "categoryName") String categoryName,
                                                       @Param(value = "userId") Integer userId);
+
+
+    List<NoteAnalysis> noteCategoryAnalysis();
 }

@@ -21,7 +21,7 @@ public class NoteInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("初始化加载数据");
+        log.info("笔记系统初始化加载数据");
 
     }
 }

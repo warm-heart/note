@@ -1,5 +1,6 @@
 package org.cloud.note.service;
 
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.NoteTag;
 
@@ -17,4 +18,6 @@ public interface NoteTagService {
     List<NoteTag> listNoteTagByNoteId(Integer noteId);
 
     Integer removeNoteTagByNoteId(Integer noteId);
+
+    List<NoteAnalysis> noteTagAnalysis();
 }

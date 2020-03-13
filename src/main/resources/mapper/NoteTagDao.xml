@@ -18,8 +18,6 @@
     </update>
 
 
-
-
     <insert id="saveNoteTag" parameterType="org.cloud.note.entity.NoteTag">
 
         insert into note_tag(note_id, note_label) values (#{noteId},#{noteLabel})
@@ -37,6 +35,11 @@
     <select id="listNoteTagByPage" resultType="org.cloud.note.entity.NoteTag">
         select  * from  note_tag limit #{page},#{size}
 
+    </select>
+
+    <select id="noteTagAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
+        select count(note_label) as num ,note_label as name
+        from note_tag group by note_label order by  num desc limit 0,5;
     </select>
 
 </mapper>

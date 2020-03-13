@@ -25,4 +25,10 @@
         select count(*) from note_share
     </select>
 
+    <select id="noteShareAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
+          select count(user.user_name) as num, user.user_name as name
+          from note_share,user  where note_share.user_id=user.user_id
+          group by user.user_name order by num desc limit 0,5;
+
+    </select>
 </mapper>

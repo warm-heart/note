@@ -1,6 +1,7 @@
 package org.cloud.note.service;
 
 import org.cloud.note.VO.NoteVO;
+import org.cloud.note.dto.NoteAnalysisDTO;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dto.NoteDTO;
 import org.cloud.note.dto.NoteDetailDTO;
@@ -105,4 +106,6 @@ public interface NoteService {
 
     ServiceResult<String> moveCategory(Integer noteId, Integer categoryId);
 
+
+    ServiceResult<NoteAnalysisDTO> noteAnalysis();
 }

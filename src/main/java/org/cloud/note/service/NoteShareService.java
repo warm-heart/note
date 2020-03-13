@@ -1,10 +1,12 @@
 package org.cloud.note.service;
 
 
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.NoteShareDTO;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.entity.NoteShare;
 
+import java.util.List;
 
 
 /**
@@ -31,4 +33,6 @@ public interface NoteShareService {
      * @return
      */
     ServiceResult<String> love(Integer noteId);
+
+    List<NoteAnalysis> noteShareAnalysis();
 }

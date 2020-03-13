@@ -256,7 +256,7 @@ public class UserServiceImpl implements UserService {
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
         List<Integer> list = new ArrayList<>();
         Integer countNote = noteDao.countNoteByUserId(userId);
-        Integer countCategory = noteCategoryDao.countCategoryByuserId(userId);
+        Integer countCategory = noteCategoryDao.countCategoryByUserId(userId);
         list.add(countNote);
         list.add(countCategory);
         return ServiceResult.success(list);

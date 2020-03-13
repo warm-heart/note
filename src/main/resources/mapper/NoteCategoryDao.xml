@@ -36,4 +36,9 @@
     <delete id="removeNoteCategoryByCategoryNameAndUserId">
         delete from  note_category where category_name=#{categoryName} and user_id=#{userId}
     </delete>
+
+    <select id="noteCategoryAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
+         select count(category_name) as num ,category_name as name
+        from note_category group by category_name order by num desc limit 0,5;
+    </select>
 </mapper>

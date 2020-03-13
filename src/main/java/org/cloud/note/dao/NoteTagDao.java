@@ -2,6 +2,7 @@ package org.cloud.note.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.entity.NoteTag;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +31,8 @@ public interface NoteTagDao {
 
     List<NoteTag> listNoteTagByPage(@Param(value = "page") Integer page,
                                     @Param(value = "size") Integer size);
+
+    List<NoteAnalysis> noteTagAnalysis();
 
 
 }

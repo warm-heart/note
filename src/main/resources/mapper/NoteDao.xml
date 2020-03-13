@@ -51,6 +51,10 @@
     <select id="findByTime" resultType="org.cloud.note.entity.Note">
         select * from note_info where <![CDATA[ update_time >= #{startTime}]]>
         and <![CDATA[ update_time <= #{endTime}
+
+
+
+
         ]]>
     </select>
 
@@ -83,5 +87,11 @@
 
     <select id="listNoteByNoteTitle" resultType="org.cloud.note.entity.Note">
           select * from  note_info where  note_title like CONCAT('%',#{keyWord},'%')
+    </select>
+
+    <select id="noteUserAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">
+          select count(user.user_name) as num, user.user_name as name
+          from note_info,user  where note_info.user_id=user.user_id
+          group by user.user_name order by num desc limit 0,5;
     </select>
 </mapper>

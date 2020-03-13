@@ -2,6 +2,7 @@ package org.cloud.note.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.entity.Note;
 import org.cloud.note.entity.User;
 import org.springframework.stereotype.Repository;
@@ -142,7 +143,9 @@ public interface NoteDao {
      */
     Integer deBlockNote(Integer noteId);
 
-    /** 获取所有封禁笔记
+    /**
+     * 获取所有封禁笔记
+     *
      * @param page
      * @param size
      * @return
@@ -150,11 +153,16 @@ public interface NoteDao {
     List<Note> listLockNoteByPage(@Param(value = "page") Integer page,
                                   @Param(value = "size") Integer size);
 
-    /** 所有封禁笔记总数
+    /**
+     * 所有封禁笔记总数
+     *
      * @return
      */
     Integer countLockNote();
 
 
     List<Note> listNoteByNoteTitle(String keyWord);
+
+    List<NoteAnalysis> noteUserAnalysis();
+
 }

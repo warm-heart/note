@@ -2,6 +2,7 @@ package org.cloud.note.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.cloud.note.dao.NoteDao;
+import org.cloud.note.dto.NoteAnalysis;
 import org.cloud.note.dto.ServiceResult;
 import org.cloud.note.dao.NoteCategoryDao;
 import org.cloud.note.entity.Note;
@@ -87,7 +88,7 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     @Transactional
     public ServiceResult<String> removeNoteCategory(String categoryName, Integer userId) {
         //1 如果笔记分类少于 1 则无法删除
-        Integer count = noteCategoryDao.countCategoryByuserId(userId);
+        Integer count = noteCategoryDao.countCategoryByUserId(userId);
         NoteCategory noteCategory = noteCategoryDao.getNoteCategoryBycategoryNameAndUserId(categoryName, userId);
         if (count <= 1) {
             return ServiceResult.error(ResultEnum.NOTE_CATEGORY_NOT_LESS_ONE.getMessage());
@@ -126,6 +127,11 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
             return ServiceResult.success(ResultEnum.NOTE_CATEGORY_UPDATE_SUCCESS.getMessage());
         }
         throw new NoteException(ResultEnum.NOTE_CATEGORY_UPDATE_FAIL);
+    }
+
+    @Override
+    public List<NoteAnalysis> noteCategoryAnalysis() {
+        return noteCategoryDao.noteCategoryAnalysis();
     }
 
 }
