@@ -73,6 +73,11 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     @Transactional
     public ServiceResult<String> saveNoteCategory(String categoryName, String categoryDescription,
                                                   Integer userId) {
+        NoteCategory category =noteCategoryDao.getNoteCategoryByCategoryNameAndUserId(categoryName,userId);
+        if (category!=null){
+            return ServiceResult.error("此分类已经存在");
+        }
+
         NoteCategory noteCategory = new NoteCategory();
         noteCategory.setCategoryName(categoryName);
         noteCategory.setCategoryDescription(categoryDescription);
