@@ -40,6 +40,6 @@
 
     <select id="getNoticeByNoticeId" resultType="org.cloud.note.entity.Notice">
 
-        select * from  notice where notice_id=#{noticeId}
+        select * from  notice  where notice_id=#{noticeId}
     </select>
 </mapper>

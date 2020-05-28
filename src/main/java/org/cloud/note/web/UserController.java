@@ -103,6 +103,7 @@ public class UserController {
 
     @PostMapping("/userInfo")
     public ApiResponse<User> userInfo(HttpServletRequest request) {
+        //获取信息
         String token = request.getHeader("token");
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
         User user = userService.getUserById(userId);

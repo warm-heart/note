@@ -29,7 +29,7 @@ public class NoticeServiceImpl implements NoticeService {
     public ServiceResult<String> createNotice(Notice notice) {
         notice.setNoticeType(0);
         Integer res = noticeDao.createNotice(notice);
-        if (res == 0) {
+        if (res == 1) {
             return ServiceResult.success("创建成功");
         }
         return ServiceResult.error("创建失败");

@@ -58,7 +58,6 @@ public class LoginController {
             return ApiResponse.success(res);
         }
         return ApiResponse.error(serviceResult.getMessage());
-
     }
 
 
@@ -109,7 +108,6 @@ public class LoginController {
         list.add(user.getUserPhone());
         return ApiResponse.success(list);
     }
-
     @PostMapping("/findPassword")
     public ApiResponse<String> userInfo(String password, String userName) {
         ServiceResult<String> result = userService.findPassword(password, userName);

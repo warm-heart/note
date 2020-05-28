@@ -45,8 +45,6 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
         List<NoteCategory> noteCategoryList = noteCategoryDao.listNoteCategoryByUserId(userId);
         if (CollectionUtils.isEmpty(noteCategoryList))
             throw new NoteException(ResultEnum.NOTE_CATEGORY_IS_EMPTY);
-       /* List<String> categoryNames = noteCategoryList.stream()
-                .map(e -> e.getCategoryName()).collect(Collectors.toList());*/
         return ServiceResult.success(noteCategoryList);
     }
 
@@ -73,8 +71,8 @@ public class NoteCategoryServiceImpl implements NoteCategoryService {
     @Transactional
     public ServiceResult<String> saveNoteCategory(String categoryName, String categoryDescription,
                                                   Integer userId) {
-        NoteCategory category =noteCategoryDao.getNoteCategoryByCategoryNameAndUserId(categoryName,userId);
-        if (category!=null){
+        NoteCategory category = noteCategoryDao.getNoteCategoryByCategoryNameAndUserId(categoryName, userId);
+        if (category != null) {
             return ServiceResult.error("此分类已经存在");
         }
 

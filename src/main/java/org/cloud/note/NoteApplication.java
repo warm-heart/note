@@ -1,6 +1,8 @@
 package org.cloud.note;
 
-import org.cloud.note.service.LoginService;
+
+
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -11,6 +13,8 @@ public class NoteApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(NoteApplication.class, args);
 
+//        NoteService noteService= (NoteService) context.getBean("noteServiceImpl");
+//        System.out.println(noteService.hashCode());
     }
 
 }

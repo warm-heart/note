@@ -24,12 +24,9 @@ public class NoticeController {
 
 
     @PostMapping(value = "/getAllNotice")
-    public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "5") Integer size,
-                                               HttpServletRequest request) {
+    public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer size) {
 
         ServiceResult<NoticeDTO> serviceResult = noticeService.listNoticeByPage(page, size);
-
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
         }
@@ -38,7 +35,8 @@ public class NoticeController {
 
 
     @PostMapping("/createFeedBack")
-    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice) {
+    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice,HttpServletRequest request) {
+
 
         ServiceResult<String> result = noticeService.createFeedBackNotice(notice);
         if (result.isSuccess()) {

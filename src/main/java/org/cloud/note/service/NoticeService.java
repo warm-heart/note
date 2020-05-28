@@ -14,9 +14,9 @@ import org.cloud.note.entity.Notice;
 public interface NoticeService {
 
 
-    ServiceResult<String> createNotice(Notice notice);
+    ServiceResult<String> createNotice(Notice notice );
 
-    ServiceResult<String> createFeedBackNotice(Notice notice);
+    ServiceResult<String> createFeedBackNotice(Notice notice );
 
     ServiceResult<String> updateNotice(Notice notice);
 

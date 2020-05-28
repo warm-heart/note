@@ -30,7 +30,7 @@ public class NoteCategoryController {
     private StringRedisTemplate stringRedisTemplate;
 
     @PostMapping(value = "/getNoteCategory")
-    public ApiResponse<List<NoteCategory>> createNote(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResponse<List<NoteCategory>> createNote(HttpServletRequest request) {
         String token = request.getHeader("token");
         ServiceResult<List<NoteCategory>> serviceResult = noteCategoryService.listNoteCategoryByUserId(token);
         if (serviceResult.isSuccess()) {
@@ -41,9 +41,7 @@ public class NoteCategoryController {
 
 
     @PostMapping(value = "/createCategory")
-    public ApiResponse<String> createCategory(@RequestBody @Valid NoteCategory noteCategory,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) {
+    public ApiResponse<String> createCategory(@RequestBody @Valid NoteCategory noteCategory, HttpServletRequest request) {
         String token = request.getHeader("token");
 
         Integer userId = Integer.valueOf(stringRedisTemplate.opsForValue().get(token));
@@ -58,8 +56,7 @@ public class NoteCategoryController {
 
     @PostMapping(value = "/removeCategory")
     public ApiResponse<String> removeCategory(@RequestParam(required = false) String categoryName,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) {
+                                              HttpServletRequest request) {
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(categoryName)) {
             throw new NoteException("参数不合法");
@@ -74,9 +71,7 @@ public class NoteCategoryController {
 
 
     @PostMapping(value = "/updateCategory")
-    public ApiResponse<String> updateCategory(@RequestBody @Valid NoteCategory noteCategory,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) {
+    public ApiResponse<String> updateCategory(@RequestBody @Valid NoteCategory noteCategory) {
 
         ServiceResult<String> serviceResult = noteCategoryService.updateNoteCategory(noteCategory);
         if (serviceResult.isSuccess()) {

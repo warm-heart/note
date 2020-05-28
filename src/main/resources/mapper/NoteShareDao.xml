@@ -17,12 +17,12 @@
 
 
     <select id="listNoteShareByPage" resultType="org.cloud.note.VO.NoteShareVO">
-        select * from note_info,note_share where note_share.note_id=note_info.note_id  limit #{page},#{size}
+        select * from note_info,note_share where note_share.note_id=note_info.note_id  and note_info.note_status=0 limit #{page},#{size}
     </select>
 
 
     <select id="countNoteShare" resultType="java.lang.Integer">
-        select count(*) from note_share
+        select count(*) from note_info,note_share where note_share.note_id=note_info.note_id  and note_info.note_status=0
     </select>
 
     <select id="noteShareAnalysis" resultType="org.cloud.note.dto.NoteAnalysis">

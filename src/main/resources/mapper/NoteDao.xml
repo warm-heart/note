@@ -52,9 +52,6 @@
         select * from note_info where <![CDATA[ update_time >= #{startTime}]]>
         and <![CDATA[ update_time <= #{endTime}
 
-
-
-
         ]]>
     </select>
 
@@ -65,7 +62,7 @@
 
 
     <select id="listNoteByPage" resultType="org.cloud.note.entity.Note">
-        select  * from  note_info  limit #{page},#{size}
+        select  * from  note_info order by update_time desc limit #{page},#{size}
     </select>
 
     <update id="lockNote">

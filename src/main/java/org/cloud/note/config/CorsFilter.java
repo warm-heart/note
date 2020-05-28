@@ -1,6 +1,7 @@
 package org.cloud.note.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class CorsFilter extends OncePerRequestFilter {
 
     static final String ORIGIN = "Origin";
+
 
     protected void doFilterInternal(
             HttpServletRequest request,

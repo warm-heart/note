@@ -43,13 +43,13 @@ public class AdminController {
         if (result.isSuccess()) {
             return ApiResponse.success(result.getResult());
         }
+        //返回结果
         return ApiResponse.error(result.getMessage());
     }
 
 
     @PostMapping("/getAllLockUser")
-    public ApiResponse<UserDTO> getAllLockUser(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "5") Integer size) {
+    public ApiResponse<UserDTO> getAllLockUser(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer size) {
         ServiceResult<UserDTO> result = userService.listLockUser(page, size);
 
         if (result.isSuccess()) {
@@ -96,8 +96,7 @@ public class AdminController {
     }
 
     @PostMapping("/getAllLockNote")
-    public ApiResponse<NoteDTO> getAllLockNote(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "5") Integer size) {
+    public ApiResponse<NoteDTO> getAllLockNote(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer size) {
         ServiceResult<NoteDTO> result = noteService.listLockNoteByPage(page, size);
 
         if (result.isSuccess()) {
@@ -161,7 +160,8 @@ public class AdminController {
 
 
     @PostMapping("/createNotice")
-    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice) {
+    public ApiResponse<String> createNotice(@RequestBody @Valid Notice notice, HttpServletRequest request) {
+
 
         ServiceResult<String> result = noticeService.createNotice(notice);
         if (result.isSuccess()) {
@@ -196,9 +196,7 @@ public class AdminController {
 
 
     @PostMapping(value = "/getAllNotice")
-    public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page,
-                                               @RequestParam(defaultValue = "5") Integer size,
-                                               HttpServletRequest request) {
+    public ApiResponse<NoticeDTO> getAllNotice(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "5") Integer size) {
 
         ServiceResult<NoticeDTO> serviceResult = noticeService.listNoticeByPage(page, size);
 

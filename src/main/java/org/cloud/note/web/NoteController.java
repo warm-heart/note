@@ -115,9 +115,7 @@ public class NoteController {
 
 
     @PostMapping(value = "/shareNote")
-
-    public ApiResponse<String> shareNote(Integer noteId,
-                                         HttpServletRequest request) {
+    public ApiResponse<String> shareNote(Integer noteId) {
         if (noteId == null) {
             return ApiResponse.error(ResultEnum.NOTE_NOT_FOUND);
         }
@@ -161,15 +159,12 @@ public class NoteController {
 
 
     @PostMapping(value = "/moveCategory")
-    public ApiResponse<String> moveCategory(Integer noteId, Integer categoryId,
-                                            HttpServletRequest request) {
-
+    public ApiResponse<String> moveCategory(Integer noteId, Integer categoryId) {
         ServiceResult<String> result = noteService.moveCategory(noteId, categoryId);
         if (result.isSuccess()) {
             return ApiResponse.success(result.getResult());
         }
         return ApiResponse.error(result.getMessage());
-
     }
 
 }

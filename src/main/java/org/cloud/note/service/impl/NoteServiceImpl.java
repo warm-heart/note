@@ -96,7 +96,7 @@ public class NoteServiceImpl implements NoteService {
         }
         //创建标签
         if (CollectionUtils.isEmpty(noteVO.getNoteTagList())) {
-           // log.info("笔记标签为空： {}");
+            // log.info("笔记标签为空： {}");
             return ServiceResult.success(ResultEnum.CREATE_NOTE_SUCCESS.getMessage());
         }
         for (String s : noteVO.getNoteTagList()) {
