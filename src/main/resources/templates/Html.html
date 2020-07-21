@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form name="form">
+
+
+    文本：<input type="text" name="name" size="10" maxlength="10" value="" placeholder="请输入"><br>
+
+    文本域：<textarea name="content" rows="3" cols="20"></textarea><br>
+    密码框： <input type="password" name="password" size="20" maxlength="11"><br>
+    隐藏域：<input type="hidden" name="..." value="..."><br>
+
+    复选框：1:<input type="checkbox" name="checkbox" value="09">
+
+    2:<input type="checkbox" name="checkbox" value="08"><br>
+
+    单选框：1:<input type="radio" name="radio" value="1">
+
+    2:<input type="radio" name="radio" value="2"><br>
+    文件上传：<input type="file" name="myfile" size="15" maxlength="100" multiple><br>
+
+    下拉 ：<select name="select">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="opel">Opel</option>
+    <option value="audi">Audi</option>
+</select><br>
+
+    disable: <input type="text" name="disable" size="10" maxlength="10" value="disabled" type="hidden" disabled>
+    改变disabled：<input type="button"  id="change" value="改变" onClick="changeDisabled()"><br>
+    readonly<input type="text" id="readonly" name="readonly" size="10" maxlength="10" value="readonly" readonly>
+    改变readonly：<input type="button"  id="change1" value="改变" onClick="changeReadOnly()"><br>
+    提交：<input type="submit" name="mySent" value="提交"><br>
+    重置：<input type="reset" name="myCancle" value="取消">
+
+</form>
+<script>
+    function changeReadOnly() {
+        //alert(document.form.readonly.value);
+        document.form.readonly.value = 'changeReadOnly';
+    }
+
+    function changeDisabled() {
+        alert(document.form.disable.value);
+        document.form.disable.value = 'changeDisabled';
+    }
+
+</script>
+</body>
+</html>

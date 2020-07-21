@@ -33,4 +33,8 @@ public class MD5Utils {
         return false;
 
     }
+
+    public static void main(String[] args) {
+        System.err.println(DigestUtils.md5DigestAsHex("123456".getBytes()));
+    }
 }

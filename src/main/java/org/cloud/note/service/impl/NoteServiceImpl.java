@@ -14,8 +14,11 @@ import org.cloud.note.service.NoteCategoryService;
 import org.cloud.note.service.NoteService;
 import org.cloud.note.service.NoteShareService;
 import org.cloud.note.service.NoteTagService;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,8 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class NoteServiceImpl implements NoteService {
+public class NoteServiceImpl implements NoteService, ApplicationContextAware {
+    ApplicationContext applicationContext;
     @Autowired
     NoteDao noteDao;
     @Autowired
@@ -408,4 +412,8 @@ public class NoteServiceImpl implements NoteService {
         return ServiceResult.success(noteAnalysisDTO);
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext=applicationContext;
+    }
 }
