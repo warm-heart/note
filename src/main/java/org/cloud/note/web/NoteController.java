@@ -64,7 +64,6 @@ public class NoteController {
             return ApiResponse.error(ResultEnum.PARAM_ERROR);
         }
         ServiceResult<NoteDetailDTO> serviceResult = noteService.getNoteByNoteId(noteId);
-
         if (serviceResult.isSuccess()) {
             return ApiResponse.success(serviceResult.getResult());
         }

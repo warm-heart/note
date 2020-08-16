@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisNode;
 import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -32,7 +34,7 @@ import java.time.Duration;
  */
 @Configuration
 @EnableCaching
-public class  RedisConfig extends CachingConfigurerSupport {
+public class RedisConfig extends CachingConfigurerSupport {
 
 
     @Value("${redis.maxIdle}")
@@ -92,25 +94,30 @@ public class  RedisConfig extends CachingConfigurerSupport {
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
 
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName("127.0.0.1");
-        redisStandaloneConfiguration.setPort(6379);
-      //  redisStandaloneConfiguration.setDatabase(1);
-        redisStandaloneConfiguration.setPassword(RedisPassword.none());
-
-
+        //   RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        //   redisStandaloneConfiguration.setHostName("127.0.0.1");
+        //   redisStandaloneConfiguration.setPort(6379);
+        // //  redisStandaloneConfiguration.setDatabase(1);
+        //   redisStandaloneConfiguration.setPassword(RedisPassword.none());
+        //
+        //
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().
                 poolConfig(jedisPoolConfig).and().
                 readTimeout(Duration.ofMillis(1800))
-            .build();
+                .build();
 
         //哨兵
-//        RedisSentinelConfiguration sentinelConfiguration = new RedisSentinelConfiguration();
-//        JedisConnectionFactory jedisConnectionFactory =
-//                new JedisConnectionFactory(sentinelConfiguration,jedisClientConfiguration);
-//        return new JedisConnectionFactory(sentinelConfiguration,jedisClientConfiguration);
+        RedisSentinelConfiguration sentinelConfiguration = new RedisSentinelConfiguration()
+                .master("master")
+                // .sentinel("127.0.0.1", 26379)
+                // .sentinel("127.0.0.1", 26380)
+                .sentinel("127.0.0.1", 26381);
 
-        return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
+        JedisConnectionFactory jedisConnectionFactory =
+                new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
+        return new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
+
+        // return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
 
     }
 
@@ -121,7 +128,8 @@ public class  RedisConfig extends CachingConfigurerSupport {
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        //om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        om.activateDefaultTyping(om.getPolymorphicTypeValidator());
         jackson2JsonRedisSerializer.setObjectMapper(om);
         //配置redisTemplate
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
