@@ -94,30 +94,30 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
 
-        //   RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        //   redisStandaloneConfiguration.setHostName("127.0.0.1");
-        //   redisStandaloneConfiguration.setPort(6379);
-        // //  redisStandaloneConfiguration.setDatabase(1);
-        //   redisStandaloneConfiguration.setPassword(RedisPassword.none());
-        //
-        //
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName("127.0.0.1");
+        redisStandaloneConfiguration.setPort(6379);
+        //  redisStandaloneConfiguration.setDatabase(1);
+        redisStandaloneConfiguration.setPassword(RedisPassword.none());
+
+
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().
                 poolConfig(jedisPoolConfig).and().
                 readTimeout(Duration.ofMillis(1800))
                 .build();
 
-        //哨兵
-        RedisSentinelConfiguration sentinelConfiguration = new RedisSentinelConfiguration()
-                .master("master")
-                // .sentinel("127.0.0.1", 26379)
-                // .sentinel("127.0.0.1", 26380)
-                .sentinel("127.0.0.1", 26381);
+        // //哨兵
+        // RedisSentinelConfiguration sentinelConfiguration = new RedisSentinelConfiguration()
+        //         .master("master")
+        //         // .sentinel("127.0.0.1", 26379)
+        //         // .sentinel("127.0.0.1", 26380)
+        //         .sentinel("127.0.0.1", 26381);
+        //
+        // JedisConnectionFactory jedisConnectionFactory =
+        //         new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
+        // return new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
 
-        JedisConnectionFactory jedisConnectionFactory =
-                new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
-        return new JedisConnectionFactory(sentinelConfiguration, jedisClientConfiguration);
-
-        // return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
+        return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
 
     }
 
