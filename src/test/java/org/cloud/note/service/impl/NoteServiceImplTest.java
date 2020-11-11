@@ -9,11 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NoteServiceImplTest extends NoteApplicationTests {
     @Autowired
-    NoteService noteService;
+    NoteServiceImpl noteService;
 
     @Test
     void noteAnalysis() {
-
 
     }
 }
